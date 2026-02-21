@@ -25,4 +25,13 @@ eval "$(archetect completions bash)"
 
 [ -f ~/.aliases ] && source ~/.aliases
 
+# Testing git worktree shortcut
+gwt() {
+  if [ -n "$1" ]; then
+    git worktree add ".gitworktrees/$1" $2
+  else
+    echo 'No branch name specified.' > /dev/stderr
+  fi
+}
+
 source ~/.secrets
