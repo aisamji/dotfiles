@@ -3,6 +3,17 @@ return {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
+            local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+
+            parser_configs.starlark = {
+                install_info = {
+                    url = 'https://github.com/tree-sitter-grammars/tree-sitter-starlark',
+                    files = { 'src/parser.c', 'src/scanner.c' },
+                    -- files = { '/path/to/tree_sitter_starlark.so' },
+                    branch = 'master'
+                },
+            }
+
             local configs = require("nvim-treesitter.configs")
 
             configs.setup {
@@ -24,6 +35,10 @@ return {
                     -- Instead of true it can also be a list of languages
                     additional_vim_regex_highlighting = false,
                 },
+                indent = {
+                    enable = true,
+                    disable = { 'yaml' },
+                },
 
             }
 
@@ -35,11 +50,14 @@ return {
                     [".*/templates/.*%.tpl"] = "helm",
                     [".*/templates/.*%.ya?ml"] = "helm",
                     ["helmfile.*%.ya?ml"] = "helm",
+                    ["Tiltfile"] = "starlark",
                 },
             })
         end
     },
     {
-        "nvim-treesitter/playground",
+        "davidmh/mdx.nvim",
+        config = true,
+        dependencies = { "nvim-treesitter/nvim-treesitter" }
     },
 }

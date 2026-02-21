@@ -1,9 +1,12 @@
 return {
     {
         'sindrets/winshift.nvim',
-        branch = 'main',
         keys = {
-            { mode = "n", "<leader>ww", vim.cmd.WinShift },
+            { mode = "n", "<leader>W", vim.cmd.WinShift, desc = "Activate WinShift" },
         },
+        cmd = {
+            "WinShift",
+        },
+        branch = 'main',
     },
 }
