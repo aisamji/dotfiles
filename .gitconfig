@@ -3,7 +3,7 @@
 	name = Ali Samji
 [core]
 	editor = nvim
-	excludesFile = /home/alisamji/.gitignore
+	excludesFile = ~/.gitignore
 [pull]
 	rebase = true
 [init]
