@@ -1,6 +1,7 @@
 [user]
-	email = aisamji@users.noreply.github.com
 	name = Ali Samji
+  email = ali@ybor.ai
+  signingKey = ~/.ssh/id_ed25519.pub
 [core]
 	editor = nvim
 	excludesFile = ~/.gitignore
@@ -15,3 +16,17 @@
 [push]
   autoSetupRemote = true
   followTags = true
+[gpg]
+  format = ssh
+[commit]
+    gpgsign = true
+[includeIf "hasconfig:remote.*.url:git@github.com:aisamji/**"]
+    path = ~/.gitconfig.d/personal
+[includeIf "hasconfig:remote.*.url:git@github.com:a1p-apps/**"]
+    path = ~/.gitconfig.d/ashley
+[includeIf "hasconfig:remote.*.url:git@github.com:afi-data-ai/**"]
+    path = ~/.gitconfig.d/ashley
+[includeIf "hasconfig:remote.*.url:git@github.com:a1p-orchestration/**"]
+    path = ~/.gitconfig.d/ashley
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_ssh_signers
