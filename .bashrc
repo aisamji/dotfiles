@@ -1,5 +1,8 @@
 export EDITOR=nvim
 
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
 # Set up fzf key bindings and fuzzy completion
 FZF_ALT_C_COMMAND= eval "$(fzf --bash)"
 eval "$(archetect completions bash)"
