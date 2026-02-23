@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)",
+      "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
+      "mcp__claude_ai_Atlassian__atlassianUserInfo",
+      "mcp__claude_ai_Atlassian__getVisibleJiraProjects",
+      "mcp__claude_ai_Atlassian__getJiraProjectIssueTypesMetadata",
+      "mcp__claude_ai_Atlassian__getJiraIssue",
+      "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(crossplane beta trace:*)",
+      "Bash(cargo check:*)",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(kubectl get secret:*)",
+      "Bash(kubectl get secrets:*)"
+    ]
+  },
+  "model": "sonnet",
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Tink.aiff"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); printf '%s@%s:%s [%s]' \"$(whoami)\" \"$(hostname -s)\" \"$(pwd)\" \"$(echo \"$input\" | jq -r '.model.display_name')\""
+  },
+  "enabledPlugins": {}
+}
