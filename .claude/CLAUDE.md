@@ -7,6 +7,7 @@
 
 ## Tools Installed
 
+- `acli` = CLI for interacting with Atlassian products (Jira, Confluence)
 - `az` = CLI for interacting with Azure products
 - `aws` = CLI for interacting with AWS products
 - `kubectl` = CLI for interacting with Kubernetes clusters
