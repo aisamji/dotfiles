@@ -4,6 +4,7 @@ else
   export EDITOR=vim
 fi
 
+<<<<<<< HEAD
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
@@ -13,6 +14,12 @@ fi
 if which kubectl > /dev/null 2> /dev/null; then
   alias k=kubectl
 fi
+=======
+# NVM stuff
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+>>>>>>> 908ecd3 (Move aliases to global .aliases file)
 
 # Set up fzf key bindings and fuzzy completion
 if which fzf > /dev/null 2> /dev/null; then
@@ -21,6 +28,5 @@ fi
 
 eval "$(archetect completions bash)"
 
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-
+[ -f ~/.aliases ] && source ~/.aliases
 source ~/.secrets
