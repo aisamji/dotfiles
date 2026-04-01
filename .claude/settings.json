@@ -19,11 +19,14 @@
       "Bash(cargo check:*)",
       "WebSearch",
       "Bash(kubectl config get-contexts:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)"
     ],
     "deny": [
       "Bash(kubectl get secret:*)",
       "Bash(find:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(cat:*)"
     ]
   },
   "hooks": {
