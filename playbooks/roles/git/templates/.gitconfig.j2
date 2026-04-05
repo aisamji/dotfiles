@@ -20,6 +20,8 @@
 [push]
   autoSetupRemote = true
   followTags = true
+[gc]
+	worktreePruneExpire = 1.day.ago
 {% if purpose == "work" %}
 [commit]
     gpgsign = true
