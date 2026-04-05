@@ -1,0 +1,22 @@
+- name: Template CLAUDE.md
+  ansible.builtin.template:
+    src: "CLAUDE.md.j2"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/CLAUDE.md"
+
+- name: Template settings.json
+  ansible.builtin.template:
+    src: "settings.json.j2"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/settings.json"
+
+- name: Find all files in files/skills
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/skills"
+    recurse: yes
+    file_type: file
+  register: found_files
+
+- name: Copy files preserving structure
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/skills/{{ item.path | relpath(role_path + '/files/skills') }}"
+  loop: "{{ found_files.files }}"

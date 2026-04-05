@@ -1,0 +1,9 @@
+- name: Template .profile
+  ansible.builtin.template:
+    src: ".profile.j2"
+    dest: "{{ ansible_facts['env'].HOME }}/.profile"
+
+- name: Copy .aliases
+  ansible.builtin.copy:
+    src: ".aliases"
+    dest: "{{ ansible_facts['env'].HOME }}/.aliases"

@@ -1,0 +1,9 @@
+- name: Copy bashprofile
+  ansible.builtin.copy:
+    src: ".bash_profile"
+    dest: "{{ ansible_facts['env'].HOME }}/.bash_profile"
+
+- name: Template bashrc
+  ansible.builtin.template:
+    src: ".bashrc.j2"
+    dest: "{{ ansible_facts['env'].HOME }}/.bashrc"

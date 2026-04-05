@@ -1,0 +1,7 @@
+[user]
+    email = aisamji@users.noreply.github.com
+[commit]
+    gpgsign = false
+[url "git@aisamji.github.com:aisamji/"]
+	insteadOf = git@github.com:aisamji/
+    

@@ -1,0 +1,22 @@
+- name: Copy .gitignore
+  ansible.builtin.copy:
+    src: ".gitignore"
+    dest: "{{ ansible_facts['env'].HOME }}/.gitignore"
+
+- name: Template .gitconfig
+  ansible.builtin.template:
+    src: ".gitconfig.j2"
+    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig"
+
+- name: Find all files in files/.gitconfig.d
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/.gitconfig.d"
+    recurse: yes
+    file_type: file
+  register: found_files
+
+- name: Copy files preserving structure
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/{{ item.path | relpath(role_path + '/files/.gitconfig.d') }}"
+  loop: "{{ found_files.files }}"
