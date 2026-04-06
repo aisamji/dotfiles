@@ -1,0 +1,9 @@
+- name: Configure the world
+  hosts: localhost
+  vars:
+    purpose: personal
+  roles:
+    - nvim
+    - bash
+    - git
+    - claude-code
