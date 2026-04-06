@@ -20,3 +20,4 @@
     src: "{{ item.path }}"
     dest: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/{{ item.path | relpath(role_path + '/files/.gitconfig.d') }}"
   loop: "{{ found_files.files }}"
+  when: purpose == "work"
