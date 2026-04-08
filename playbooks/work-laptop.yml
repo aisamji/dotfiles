@@ -2,6 +2,7 @@
   hosts: localhost
   vars:
     purpose: work
+    playbook: playbooks/work-laptop.yml
   roles:
     - nvim
     - bash

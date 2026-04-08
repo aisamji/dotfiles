@@ -2,6 +2,7 @@
   hosts: localhost
   vars:
     purpose: personal
+    playbook: playbooks/personal-arch-device.yml
   roles:
     - nvim
     - bash

@@ -49,3 +49,33 @@ fi
 if which kubectl > /dev/null 2> /dev/null; then
   alias k=kubectl
 fi
+
+# Dotfile Management
+dot() {
+  DOTFILE_ROOT={{ ansible_facts['env'].PWD | dirname }}
+
+  case "$1" in
+    status)
+      git -C $DOTFILE_ROOT fetch
+      git -C $DOTFILE_ROOT status
+      ;;
+    edit)
+      if [ -n "$EDITOR" ]; then
+        $EDITOR $DOTFILE_ROOT
+      else
+        vi $DOTFILE_ROOT
+      fi
+      ;;
+    diff)
+      ansible-playbook --check --diff "$DOTFILE_ROOT/{{ playbook }}"
+      ;;
+    apply)
+      ansible-playbook "$DOTFILE_ROOT/{{ playbook }}"
+      ;;
+    *)
+      echo "Usage: dot <subcommand>" >&2
+      echo "Subcommands: status, edit, diff, apply" >&2
+      return 1
+      ;;
+  esac
+}
