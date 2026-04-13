@@ -3,6 +3,7 @@
     "allow": [
 {% if purpose == "work" %}
       "Skill(ybor-standards:git)",
+      "Bash(acli jira workitem view:*)",
 {% endif %}
       "Bash(kubectl get:*)",
       "Bash(kubectl describe:*)",
@@ -17,13 +18,16 @@
       "WebSearch",
       "Bash(kubectl config get-contexts:*)",
       "Bash(head:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": [
       "Bash(kubectl get secret:*)",
       "Bash(find:*)",
       "Bash(python:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr close:*)"
     ]
   },
   "statusLine": {
