@@ -51,7 +51,7 @@ fi
 
 # Dotfile Management
 dotfiles() {
-  DOTFILE_ROOT={{ ansible_facts['env'].PWD | dirname }}
+  DOTFILE_ROOT={{ playbook_dir }}
 
   case "$1" in
     status)
