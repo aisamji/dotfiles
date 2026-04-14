@@ -1,3 +1,6 @@
+# TODO: Install bash
+# TODO: Ensure bash is set as default shell
+
 - name: Copy bashprofile
   ansible.builtin.copy:
     src: ".bash_profile"
