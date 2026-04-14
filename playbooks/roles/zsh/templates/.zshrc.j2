@@ -20,8 +20,8 @@ fi
 
 {% if purpose == "work" %}
 # Work Settings
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+export NVM_LAZY_LOAD=true
+source ~/.zsh/plugins/zsh-nvm.plugin.zsh
 
 # Add alias for local plugin development with claude code.
 alias claudep='claude --plugin-dir ~/orgs/p6m-run/claude-plugins/plugins/ybor-standards'
