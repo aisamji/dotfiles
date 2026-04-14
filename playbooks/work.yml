@@ -2,10 +2,8 @@
   hosts: localhost
   vars:
     purpose: work
-    playbook: playbooks/work.yml
-  roles:
-    - nvim
-    - bash
-    - git
-    - claude-code
-    - zsh
+    playbook: work.yml
+
+  tasks:
+    - ansible.builtin.include_tasks:
+        file: common_tasks.yml

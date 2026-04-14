@@ -1,11 +1,9 @@
-- name: Configure the world
+- name: Configure Dotfiles
   hosts: localhost
   vars:
     purpose: personal
-    playbook: playbooks/personal.yml
-  roles:
-    - nvim
-    - bash
-    - git
-    - claude-code
-    - zsh
+    playbook: personal.yml
+
+  tasks:
+    - ansible.builtin.include_tasks:
+        file: common_tasks.yml

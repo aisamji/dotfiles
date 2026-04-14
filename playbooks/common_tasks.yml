@@ -1,0 +1,38 @@
+- name: Setup Neovim
+  ansible.builtin.include_role:
+    name: nvim
+  tags: [neovim]
+
+- name: Setup Git
+  ansible.builtin.include_role:
+    name: git
+  tags: [git]
+
+- name: Setup Claude Code
+  ansible.builtin.include_role:
+    name: claude-code
+  tags: [claude-code]
+
+- name: Check Bash Installed
+  ansible.builtin.command:
+    cmd: bash --version
+  tags: [bash]
+  register: bash_check
+
+- name: Setup Bash
+  ansible.builtin.include_role:
+    name: bash
+  tags: [bash]
+  when: "'bash' in ansible_facts['env'].SHELL or bash_check.rc == 0"
+
+- name: Check Zsh Installed
+  ansible.builtin.command:
+    cmd: zsh --version
+  tags: [bash]
+  register: zsh_check
+
+- name: Setup Zsh
+  ansible.builtin.include_role:
+    name: zsh
+  tags: [zsh]
+  when: "'zsh' in ansible_facts['env'].SHELL or zsh_check.rc == 0"
