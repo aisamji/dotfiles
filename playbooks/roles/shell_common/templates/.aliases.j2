@@ -37,7 +37,6 @@ gwt() {
 # TODO: gpair/greview/gfix to create a `.pair`/`.pair`/`.fix` directory under root and check out specified branch
 # TODO: gprune to run all of git prune operations (git worktree prune, git branch prune, etc.)
 
-alias please='sudo $(history -p !!)'
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -50,31 +49,47 @@ if which kubectl > /dev/null 2> /dev/null; then
 fi
 
 # Dotfile Management
-dotfiles() {
-  DOTFILE_ROOT={{ playbook_dir }}
+dotfiles() (
+  cd {{ playbook_dir | dirname }}
+  edit_dotfiles() {
+    if [ -n "$EDITOR" ]; then
+      $EDITOR .
+    else
+      vi .
+    fi
+  }
+
+  git fetch || (echo "git fetch failed" >&2 && return 2)
+
+  if ! (git diff --quiet origin/main main); then
+    echo "Upstream changes detected. Attempting merge with rebase." >&2
+    if ! (git merge --autostash --ff-only); then
+      echo "git merge resulted in conflicts. Launching in editor." >&2
+      edit_dotfiles
+      if [ "$1" == "edit" ]; then
+        return 0
+      else
+        return 2        
+      fi
+    fi
+  fi
 
   case "$1" in
-    status)
-      git -C $DOTFILE_ROOT fetch
-      git -C $DOTFILE_ROOT status
-      ;;
     edit)
-      if [ -n "$EDITOR" ]; then
-        $EDITOR $DOTFILE_ROOT
-      else
-        vi $DOTFILE_ROOT
-      fi
+      edit_dotfiles
       ;;
     diff)
-      ansible-playbook --check --diff "$DOTFILE_ROOT/{{ playbook }}"
+      git status
+      ansible-playbook --check --diff "playbooks/{{ playbook }}"
       ;;
     apply)
-      ansible-playbook "$DOTFILE_ROOT/{{ playbook }}"
+      git status
+      ansible-playbook "playbooks/{{ playbook }}"
       ;;
     *)
-      echo "Usage: dot <subcommand>" >&2
-      echo "Subcommands: status, edit, diff, apply" >&2
+      echo "Usage: dotfiles <subcommand>" >&2
+      echo "Subcommands: edit, diff, apply" >&2
       return 1
       ;;
   esac
-}
+)
