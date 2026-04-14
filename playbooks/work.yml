@@ -1,8 +1,8 @@
 - name: Configure the world
   hosts: localhost
   vars:
-    purpose: personal
-    playbook: personal-arch-device.yml
+    purpose: work
+    playbook: playbooks/work.yml
   roles:
     - nvim
     - bash

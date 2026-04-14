@@ -1,8 +1,8 @@
 - name: Configure the world
   hosts: localhost
   vars:
-    purpose: work
-    playbook: work-laptop.yml
+    purpose: personal
+    playbook: playbooks/personal.yml
   roles:
     - nvim
     - bash
