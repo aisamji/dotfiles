@@ -1,0 +1,2 @@
+- name: Lazy Restore
+  ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
