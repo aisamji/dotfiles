@@ -1,2 +1,3 @@
+# Lazy Commands Docs: https://lazy.folke.io/usage#-commands
 - name: Lazy Restore
   ansible.builtin.command: nvim --headless "+Lazy! restore" +qa

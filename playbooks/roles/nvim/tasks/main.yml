@@ -1,15 +1,23 @@
-# This task must be run before "Copy .config/nvim" so that it can properly detect changes
-# and launch the Lazy Restore handler.
+- name: Gather config files
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/nvim"
+    recurse: true
+    file_type: file
+    excludes:
+      - lazy-lock.json  # Excluded here so we can copy it individually with different settings
+  register: nvim_config
+
+- name: Copy to .config/nvim
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | relpath(role_path + '/files/nvim') }}"
+    mode: "0644"
+    directory_mode: "0755"
+  loop: "{{ nvim_config.files }}"
+
 - name: Copy lazy-lock.json
   ansible.builtin.copy:
     src: "{{ role_path }}/files/nvim/lazy-lock.json"
     dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
     mode: "0644"
   notify: Lazy Restore
-
-- name: Copy .config/nvim
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/nvim"
-    dest: "{{ ansible_facts['env'].HOME }}/.config/"
-    mode: "0644"
-    directory_mode: "0755"
