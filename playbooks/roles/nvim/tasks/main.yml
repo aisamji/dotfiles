@@ -4,7 +4,7 @@
     recurse: true
     file_type: file
     excludes:
-      - lazy-lock.json  # Excluded here so we can copy it individually with different settings
+      - lazy-lock.json # Excluded here so we can copy it individually with different settings
   register: nvim_config
 
 - name: Copy to .config/nvim
@@ -20,4 +20,6 @@
     src: "{{ role_path }}/files/nvim/lazy-lock.json"
     dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
     mode: "0644"
-  notify: Lazy Restore
+  notify:
+    - Lazy Clean
+    - Lazy Restore
