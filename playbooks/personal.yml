@@ -1,4 +1,4 @@
-- name: Configure Dotfiles
+- name: Configure Personal Machine
   hosts: localhost
   vars:
     purpose: personal

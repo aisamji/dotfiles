@@ -1,4 +1,4 @@
-- name: Configure the world
+- name: Configure Work Machine
   hosts: localhost
   vars:
     purpose: work
