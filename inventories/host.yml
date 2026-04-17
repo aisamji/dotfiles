@@ -10,7 +10,6 @@ personal_grp:
       ansible_connection: local
   vars:
     purpose: personal
-    playbook: personal.yml
 
 work_grp:
   hosts:
@@ -18,4 +17,3 @@ work_grp:
       ansible_connection: local
   vars:
     purpose: work
-    playbook: work.yml

@@ -80,11 +80,11 @@ dotfiles() (
       ;;
     diff)
       git status
-      ansible-playbook --check --diff "playbooks/{{ playbook }}"
+      ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
     apply)
       git status
-      ansible-playbook "playbooks/{{ playbook }}"
+      ansible-playbook playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
     *)
       echo "Usage: dotfiles <subcommand>" >&2
