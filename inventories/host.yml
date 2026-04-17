@@ -1,0 +1,21 @@
+# Add localhost to all groups and use --limit to select which group to apply
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+
+personal_grp:
+  hosts:
+    personal:
+      ansible_connection: local
+  vars:
+    purpose: personal
+    playbook: personal.yml
+
+work_grp:
+  hosts:
+    work:
+      ansible_connection: local
+  vars:
+    purpose: work
+    playbook: work.yml

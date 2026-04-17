@@ -25,17 +25,6 @@ fi
 
 # TODO: Install Ansible and Python requirements
 
-# TODO: Clone the dotfiles repo, to support downloading and running jsut the script.
-case "$1" in
-  personal)
-    ansible-playbook playbooks/site.yml -e @inventories/group_vars/personal.yml
-  ;;
-  work)
-    ansible-playbook playbooks/site.yml -e @inventories/group_vars/work.yml
-  ;;
-  *)
-    echo 'Unrecognized environment' >&2
-    exit 1
-  ;;
-esac
+# TODO: Clone the dotfiles repo, to support downloading and running just the script.
+ansible-playbook playbooks/site.yml --inventory inventories/host.yml --limit "$1"
 

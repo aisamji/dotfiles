@@ -1,5 +1,7 @@
 - name: Configure Machine
-  hosts: localhost
+  hosts:
+    - personal
+    - work
 
   roles:
     - role: nvim
