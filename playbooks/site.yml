@@ -1,0 +1,12 @@
+- name: Configure Machine
+  hosts: localhost
+
+  roles:
+    - role: nvim
+      tags: [neovim, nvim]
+    - role: git
+      tags: [git]
+    - role: claude-code
+      tags: [claude, claude-code]
+    - role: bash
+      tags: [bash, shell]

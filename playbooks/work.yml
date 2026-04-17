@@ -1,9 +1,0 @@
-- name: Configure Work Machine
-  hosts: localhost
-  vars:
-    purpose: work
-    playbook: work.yml
-
-  tasks:
-    - ansible.builtin.import_tasks:
-        file: common_tasks.yml

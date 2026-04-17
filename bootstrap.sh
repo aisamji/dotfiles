@@ -28,10 +28,10 @@ fi
 # TODO: Clone the dotfiles repo, to support downloading and running jsut the script.
 case "$1" in
   personal)
-    ansible-playbook playbooks/personal.yml
+    ansible-playbook playbooks/site.yml -e @inventories/group_vars/personal.yml
   ;;
   work)
-    ansible-playbook playbooks/work.yml
+    ansible-playbook playbooks/site.yml -e @inventories/group_vars/work.yml
   ;;
   *)
     echo 'Unrecognized environment' >&2

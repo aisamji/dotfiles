@@ -1,9 +1,0 @@
-- name: Configure Personal Machine
-  hosts: localhost
-  vars:
-    purpose: personal
-    playbook: personal.yml
-
-  tasks:
-    - ansible.builtin.import_tasks:
-        file: common_tasks.yml
