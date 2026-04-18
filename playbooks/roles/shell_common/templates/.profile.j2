@@ -4,7 +4,7 @@ if which fnm > /dev/null 2> /dev/null; then
   eval "$(fnm env)"
 fi
 {% else %}
-{# Not compatible with nvm. Want to switch personal devices to nvm as well. #}
+{# Not compatible with fnm. Want to switch personal devices to fnm as well. #}
 export npm_config_prefix="$HOME/.local"
 {% endif %}
 

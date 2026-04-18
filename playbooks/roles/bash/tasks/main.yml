@@ -2,8 +2,8 @@
 # TODO: Ensure bash is set as default shell
 
 - name: Copy bashprofile
-  ansible.builtin.copy:
-    src: ".bash_profile"
+  ansible.builtin.template:
+    src: ".bash_profile.j2"
     dest: "{{ ansible_facts['env'].HOME }}/.bash_profile"
 
 - name: Template bashrc

@@ -16,6 +16,8 @@ if which archetect > /dev/null 2> /dev/null; then
 fi
 
 [ -f ~/.aliases ] && source ~/.aliases
+complete -o default -F __start_kubectl k
+
 [ -f ~/.secrets ] && source ~/.secrets
 
 {% if purpose == "work" %}
