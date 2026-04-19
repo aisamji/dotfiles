@@ -78,17 +78,17 @@ dotfiles() (
     edit)
       edit_dotfiles
       ;;
-    diff)
+    check)
       git status
       ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
-    apply)
+    sync)
       git status
-      ansible-playbook playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
+      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
     *)
       echo "Usage: dotfiles <subcommand>" >&2
-      echo "Subcommands: edit, diff, apply" >&2
+      echo "Subcommands: edit, check, sync" >&2
       return 1
       ;;
   esac
