@@ -24,6 +24,6 @@ complete -o default -F __start_kubectl k
 # Work Settings
 
 # Add alias for local plugin development with claude code.
-alias claudep='claude --plugin-dir ~/orgs/p6m-run/claude-plugins/plugins/ybor-standards'
+alias claudep="claude $(find ~/orgs/p6m-run/claude-plugins/plugins -type d -depth 1 -exec echo -n '--plugin-dir {} ' \;)"
 {% endif %}
 
