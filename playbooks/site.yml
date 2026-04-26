@@ -4,6 +4,7 @@
     - work
 
   roles:
+    - role: packages
     - role: nvim
       tags: [neovim, nvim]
     - role: git
