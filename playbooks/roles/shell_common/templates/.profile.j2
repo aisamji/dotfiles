@@ -1,12 +1,7 @@
-{% if purpose == "work" %}
 if which fnm > /dev/null 2> /dev/null; then
-{# Note for installation: `fnm install --lts && fnm default lts-latest` to start off with latest lts #}
   eval "$(fnm env)"
 fi
-{% else %}
-{# Not compatible with fnm. Want to switch personal devices to fnm as well. #}
 export npm_config_prefix="$HOME/.local"
-{% endif %}
 
 {% if ansible_facts['distribution'] == "MacOSX" %}
 eval "$(/opt/homebrew/bin/brew shellenv)"
