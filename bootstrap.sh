@@ -26,5 +26,5 @@ fi
 # TODO: Install Ansible and Python requirements
 
 # TODO: Clone the dotfiles repo, to support downloading and running just the script.
-ansible-playbook playbooks/site.yml --inventory inventories/host.yml --limit "$1"
+ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit "$1"
 

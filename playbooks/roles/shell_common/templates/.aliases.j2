@@ -88,7 +88,7 @@ dotfiles() (
       ;;
     sync)
       git status
-      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
+      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
       ;;
     *)
       echo "Usage: dotfiles <subcommand>" >&2
