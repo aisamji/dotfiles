@@ -14,6 +14,10 @@
     mode: "0644"
     directory_mode: "0755"
   loop: "{{ nvim_config.files }}"
+  notify:
+    - clean neovim plugins
+    - install neovim plugins
+    - writeback neovim lockfile
 
 - name: Copy lazy-lock.json
   ansible.builtin.copy:
