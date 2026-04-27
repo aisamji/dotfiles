@@ -44,10 +44,10 @@
 
 - name: Install node LTS
   ansible.builtin.command: fnm install --lts
-  changed_when: "'lts-latest' not in fnm_list.stdout"
+  changed_when: "fnm_list.stdout_lines | select('search', 'lts-latest') | length == 0"
 
 - name: Set node LTS as default
   ansible.builtin.command: fnm default lts-latest
-  changed_when: "'lts-latest, default' not in fnm_list.stdout"
+  changed_when: "fnm_list.stdout_lines | select('search', 'lts-latest') | select('search', 'default') | length == 0"
 # TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
 # TODO: Install yarn with fnm
