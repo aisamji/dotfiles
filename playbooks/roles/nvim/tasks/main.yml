@@ -21,5 +21,6 @@
     dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
     mode: "0644"
   notify:
-    - Lazy Clean
-    - Lazy Restore
+    - clean neovim plugins
+    - restore neovim plugins
+    - writeback neovim lockfile
