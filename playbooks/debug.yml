@@ -1,0 +1,11 @@
+- name: Debug Machine
+  hosts:
+    - localhost
+
+  tasks:
+    - name: Print distribution
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['distribution'] }}"
+    - name: Print package_manager
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['pkg_mgr'] }}"
