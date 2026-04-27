@@ -2,7 +2,7 @@
   when: ansible_facts['distribution'] == "MacOSX"
   block:
     - name: Install formulas
-      community.general.homebrew:
+      ansible.builtin.package:
         state: present
         name:
           - neovim
@@ -16,6 +16,7 @@
           - fnm
           - kubectl
           - tree-sitter-cli
+          - ripgrep
     # TODO: Configure taps, casks, etc.
 
 - name: Install packages (Arch)
@@ -35,6 +36,7 @@
           - fzf
           - fnm
           - tree-sitter
+          - rg
     # TODO: Install from AUR?
 
 - name: Gather fnm info
