@@ -77,6 +77,24 @@ return {
     config = function()
       require("telescope").load_extension "ui-select"
       require("telescope").setup {
+        defaults = {
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--hidden",
+            -- TODO: Ensure `.git/` is in ~/.rgignore
+          },
+        },
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+        },
         extensions = {
           ["ui-select"] = {
             require("telescope.themes").get_dropdown {},
