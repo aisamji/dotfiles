@@ -2,7 +2,7 @@
   when: ansible_facts['distribution'] == "MacOSX"
   block:
     - name: Install formulas
-      ansible.builtin.package:
+      community.general.homebrew:
         state: present
         name:
           - neovim
@@ -24,7 +24,7 @@
   become: "{{ not ansible_check_mode }}"
   block:
     - name: Install packages
-      ansible.builtin.package:
+      community.general.pacman:
         state: present
         name:
           - neovim
