@@ -36,7 +36,7 @@
           - fzf
           - fnm
           - tree-sitter
-          - rg
+          - ripgrep
     # TODO: Install from AUR?
 
 - name: Gather fnm info
