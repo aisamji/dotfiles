@@ -1,2 +1,1 @@
-- name: Default to Node Latest LTS
-  ansible.builtin.command: fnm default lts-latest
+[]

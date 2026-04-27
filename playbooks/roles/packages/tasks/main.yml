@@ -15,7 +15,6 @@
           - claude-code@latest
           - fnm
           - kubectl
-          - yarn
           - tree-sitter-cli
     # TODO: Configure taps, casks, etc.
 
@@ -35,15 +34,20 @@
           - go-yq
           - fzf
           - fnm
-          - yarn
           - tree-sitter
     # TODO: Install from AUR?
 
+- name: Gather fnm info
+  ansible.builtin.command: fnm list
+  register: fnm_list
+  changed_when: false
+
 - name: Install node LTS
   ansible.builtin.command: fnm install --lts
-  register: fnm_node_lts
-  changed_when: "'already installed' not in fnm_node_lts.stderr"
-  notify:
-    - Default to Node Latest LTS
+  changed_when: "'lts-latest' not in fnm_list.stdout"
 
-# TODO: Use npm to install claude-code. Remove from homebrew
+- name: Set node LTS as default
+  ansible.builtin.command: fnm default lts-latest
+  changed_when: "'lts-latest, default' not in fnm_list.stdout"
+# TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
+# TODO: Install yarn with fnm
