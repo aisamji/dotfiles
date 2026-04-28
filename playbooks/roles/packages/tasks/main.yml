@@ -17,6 +17,8 @@
           - kubectl
           - tree-sitter-cli
           - ripgrep
+          - node
+          - yarn
     # TODO: Configure taps, casks, etc.
 
 - name: Install packages (Arch)
@@ -37,6 +39,8 @@
           - fnm
           - tree-sitter
           - ripgrep
+          - nodejs
+          - yarn
     # TODO: Install from AUR?
 
 - name: Gather fnm info
@@ -44,12 +48,7 @@
   register: fnm_list
   changed_when: false
 
-- name: Install node LTS
-  ansible.builtin.command: fnm install --lts
-  changed_when: "fnm_list.stdout_lines | select('search', 'lts-latest') | length == 0"
-
-- name: Set node LTS as default
-  ansible.builtin.command: fnm default lts-latest
-  changed_when: "fnm_list.stdout_lines | select('search', 'lts-latest') | select('search', 'default') | length == 0"
+- name: Set system node as default
+  ansible.builtin.command: fnm default system
+  changed_when: "fnm_list.stdout_lines | select('search', 'system') | select('search', 'default') | length == 0"
 # TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
-# TODO: Install yarn with fnm

@@ -68,15 +68,15 @@ dotfiles() (
   if ! (git diff --quiet origin/main main); then
     echo "Upstream changes detected. Attempting merge with rebase." >&2
     git merge --autostash --ff-only --quiet # Always returns zero
-    if ! git diff --check --quiet; then
-      echo "git merge resulted in conflicts. Launching in editor." >&2
-      edit_dotfiles
-      if [ "$1" == "edit" ]; then
-        return 0
-      else
-        return 2        
-      fi
-    fi
+    # if ! git diff --check --quiet; then
+    #   echo "git merge resulted in conflicts. Launching in editor." >&2
+    #   edit_dotfiles
+    #   if [ "$1" == "edit" ]; then
+    #     return 0
+    #   else
+    #     return 2        
+    #   fi
+    # fi
   fi
 
   case "$1" in
