@@ -66,17 +66,17 @@ dotfiles() (
   git fetch || (echo "git fetch failed" >&2 && return 2)
 
   if ! (git diff --quiet origin/main main); then
-    echo "Upstream changes detected. Attempting merge with rebase." >&2
-    git merge --autostash --ff-only --quiet # Always returns zero
-    # if ! git diff --check --quiet; then
-    #   echo "git merge resulted in conflicts. Launching in editor." >&2
-    #   edit_dotfiles
-    #   if [ "$1" == "edit" ]; then
-    #     return 0
-    #   else
-    #     return 2        
-    #   fi
-    # fi
+    echo "Upstream changes detected. Attempting rebase." >&2
+    git rebase --autostash --empty=drop --quiet
+    if ! (git diff --check --quiet main); then
+      echo "git rebase resulted in conflicts. Launching in editor." >&2
+      edit_dotfiles
+      if [ "$1" == "edit" ]; then
+        return 0
+      else
+        return 2
+      fi
+    fi
   fi
 
   case "$1" in
