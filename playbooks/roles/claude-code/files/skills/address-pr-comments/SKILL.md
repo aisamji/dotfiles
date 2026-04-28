@@ -1,6 +1,6 @@
 ---
-name: review-pr
-description: Retrieve all comments on a given PR for the repo in the current directory — must pass in the pr number when using the skill. Use when you need to perform a PR review on a github repository.
+name: address-pr-comments
+description: Rules for responding to comments on a github PR — must pass in the pr number when using the skill. Use when you need to reply/address comments on a given pr.
 arguments: [pr_number]
 user-invocable: true
 disable-model-invocation: false
