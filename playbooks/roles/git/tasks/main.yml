@@ -20,7 +20,7 @@
 - name: Copy gitconfig directories for work
   ansible.builtin.copy:
     src: "{{ item.path }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/{{ item.path | relpath(role_path + '/files/.gitconfig.d') }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/"
     mode: "0644"
     directory_mode: "0755"
   loop: "{{ gitconfigd.files }}"

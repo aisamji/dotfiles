@@ -10,7 +10,7 @@
 - name: Copy to .config/nvim
   ansible.builtin.copy:
     src: "{{ item.path }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | relpath(role_path + '/files/nvim') }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname | relpath(role_path + '/files/nvim') }}/"
     mode: "0644"
     directory_mode: "0755"
   loop: "{{ nvim_config.files }}"
@@ -22,7 +22,7 @@
 - name: Copy lazy-lock.json
   ansible.builtin.copy:
     src: "{{ role_path }}/files/nvim/lazy-lock.json"
-    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/"
     mode: "0644"
   notify:
     - clean neovim plugins

@@ -18,5 +18,5 @@
 - name: Copy files preserving structure
   ansible.builtin.copy:
     src: "{{ item.path }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.claude/skills/{{ item.path | relpath(role_path + '/files/skills') }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/skills/{{ item.path | dirname | relpath(role_path + '/files/skills') }}/"
   loop: "{{ found_files.files }}"
