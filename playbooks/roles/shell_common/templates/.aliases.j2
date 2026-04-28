@@ -68,15 +68,15 @@ dotfiles() (
   if ! (git diff --quiet origin/main main); then
     echo "Upstream changes detected. Attempting rebase." >&2
     git rebase --autostash --empty=drop --quiet
-    if ! (git diff --check --quiet main); then
-      echo "git rebase resulted in conflicts. Launching in editor." >&2
-      edit_dotfiles
-      if [ "$1" == "edit" ]; then
-        return 0
-      else
-        return 2
-      fi
-    fi
+    # if ! (git diff --check --quiet main); then
+    #   echo "git rebase resulted in conflicts. Launching in editor." >&2
+    #   edit_dotfiles
+    #   if [ "$1" == "edit" ]; then
+    #     return 0
+    #   else
+    #     return 2
+    #   fi
+    # fi
   fi
 
   case "$1" in
