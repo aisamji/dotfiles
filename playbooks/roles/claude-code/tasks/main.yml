@@ -8,15 +8,16 @@
     src: "settings.json.j2"
     dest: "{{ ansible_facts['env'].HOME }}/.claude/settings.json"
 
-- name: Find all files in files/skills
-  ansible.builtin.find:
-    paths: "{{ role_path }}/files/skills"
-    recurse: yes
-    file_type: file
-  register: found_files
+- name: Symbolic link .claude/skills
+  ansible.builtin.file:
+    state: link
+    src: "{{ role_path }}/files/skills"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/skills"
+    force: true
 
-- name: Copy files preserving structure
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.claude/skills/{{ item.path | dirname | relpath(role_path + '/files/skills') }}/"
-  loop: "{{ found_files.files }}"
+- name: Symbolic link .claude/agents
+  ansible.builtin.file:
+    state: link
+    src: "{{ role_path }}/files/agents"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/agents"
+    force: true
