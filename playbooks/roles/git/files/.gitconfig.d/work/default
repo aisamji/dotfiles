@@ -1,0 +1,17 @@
+[user]
+  email = ali@ybor.ai
+  signingKey = ~/.ssh/id_ed25519.pub
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  allowedSignersFile = ~/.config/git/allowed_ssh_signers
+[includeIf "hasconfig:remote.*.url:git@github.com:aisamji/**"]
+  path = ~/.gitconfig.d/personal
+[includeIf "hasconfig:remote.*.url:git@github.com:a1p-apps/**"]
+  path = ~/.gitconfig.d/ashley
+[includeIf "hasconfig:remote.*.url:git@github.com:afi-data-ai/**"]
+  path = ~/.gitconfig.d/ashley
+[includeIf "hasconfig:remote.*.url:git@github.com:a1p-orchestration/**"]
+  path = ~/.gitconfig.d/ashley

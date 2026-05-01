@@ -1,18 +1,20 @@
-- name: Copy .gitignore
-  ansible.builtin.copy:
-    src: ".gitignore"
-    dest: "{{ ansible_facts['env'].HOME }}/.gitignore"
-    mode: "0644"
+- name: Symbolic link .gitignore
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.gitignore"
+    path: "{{ ansible_facts['env'].HOME }}/.gitignore"
+    state: link
+    force: true
 
-- name: Template .gitconfig
-  ansible.builtin.template:
-    src: ".gitconfig.j2"
-    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig"
-    mode: "0644"
+- name: Symbolic link .gitconfig
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.gitconfig"
+    path: "{{ ansible_facts['env'].HOME }}/.gitconfig"
+    state: link
+    force: true
 
 - name: Symbolic link .gitconfig.d
   ansible.builtin.file:
-    src: "{{ role_path }}/files/.gitconfig.d"
+    src: "{{ role_path }}/files/.gitconfig.d/{{ purpose }}"
     path: "{{ ansible_facts['env'].HOME }}/.gitconfig.d"
     state: link
     force: true
