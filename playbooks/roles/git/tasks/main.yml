@@ -10,25 +10,9 @@
     dest: "{{ ansible_facts['env'].HOME }}/.gitconfig"
     mode: "0644"
 
-- name: Gather conditional gitconfig directories
-  ansible.builtin.find:
-    paths: "{{ role_path }}/files/.gitconfig.d"
-    recurse: true
-    file_type: file
-  register: gitconfigd
-
-- name: Copy gitconfig directories for work
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/"
-    mode: "0644"
-    directory_mode: "0755"
-  loop: "{{ gitconfigd.files }}"
-  when: purpose == "work"
-
-- name: Clean up work gitconfig directories if not needed
+- name: Symbolic link .gitconfig.d
   ansible.builtin.file:
-    path: "{{ ansible_facts['env'].HOME }}/.gitconfig.d/{{ item.path | relpath(role_path + '/files/.gitconfig.d') }}"
-    state: absent
-  loop: "{{ gitconfigd.files }}"
-  when: purpose != "work"
+    src: "{{ role_path }}/files/.gitconfig.d"
+    path: "{{ ansible_facts['env'].HOME }}/.gitconfig.d"
+    state: link
+    force: true
