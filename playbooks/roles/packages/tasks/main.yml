@@ -46,6 +46,7 @@
 - name: Gather fnm info
   ansible.builtin.command: fnm list
   register: fnm_list
+  check_mode: false
   changed_when: false
 
 - name: Set system node as default
