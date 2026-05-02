@@ -37,6 +37,7 @@
           - go-yq
           - fzf
           - fnm
+          - timeshift
           - tree-sitter
           - ripgrep
           - nodejs
