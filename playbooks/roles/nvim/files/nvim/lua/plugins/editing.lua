@@ -16,17 +16,17 @@ return {
         },
     },
     {
-        'hrsh7th/nvim-cmp',
-        version = '*',
+        "hrsh7th/nvim-cmp",
+        version = "*",
         opts = {
             sources = {
-                { name = 'nvim_lsp' },
-                { name = 'async_path' },
+                { name = "nvim_lsp" },
+                { name = "async_path" },
             },
         },
         dependencies = {
-            'hrsh7th/cmp-nvim-lsp',
-            'FelipeLema/cmp-async-path',
+            "hrsh7th/cmp-nvim-lsp",
+            "FelipeLema/cmp-async-path",
         },
-    }
+    },
 }
