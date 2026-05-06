@@ -25,5 +25,10 @@ return {
                 { "<leader>g", group = "git" },
             })
         end
+    },
+    {
+        'nvim-lualine/lualine.nvim',
+        config = true,
+        dependencies = { 'nvim-tree/nvim-web-devicons' }
     }
 }
