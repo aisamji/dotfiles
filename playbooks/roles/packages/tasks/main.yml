@@ -19,6 +19,7 @@
           - ripgrep
           - node
           - yarn
+          - worktrunk
     # TODO: Configure taps, casks, etc.
 
 - name: Install packages (Arch)
@@ -43,6 +44,7 @@
           - nodejs
           - npm
           - yarn
+          - worktrunk
     # TODO: Install from AUR?
 
 - name: Gather fnm info
