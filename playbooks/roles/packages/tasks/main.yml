@@ -1,6 +1,7 @@
 - name: Install packages (Homebrew)
   when: ansible_facts['distribution'] == "MacOSX"
   block:
+    # TODO: Configure taps
     - name: Install formulas
       community.general.homebrew:
         state: present
@@ -20,7 +21,12 @@
           - node
           - yarn
           - worktrunk
-    # TODO: Configure taps, casks, etc.
+    - name: Install casks
+      community.general.homebrew_cask:
+        state: present
+        name:
+          - font-jetbrains-mono-nerd-font
+          - font-fira-code-nerd-font
 
 - name: Install packages (Arch)
   when: ansible_facts['distribution'] == "Archlinux"
@@ -60,5 +66,4 @@
   check_mode: false
   changed_when: "fnm_list.stdout_lines | select('search', 'system') |
     select('search', 'default') | length == 0"
-
 # TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
