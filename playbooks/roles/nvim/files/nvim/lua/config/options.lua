@@ -9,3 +9,5 @@ vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.mouse = ""
+
+vim.cmd.colorscheme "catppuccin"
