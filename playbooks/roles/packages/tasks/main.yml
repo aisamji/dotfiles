@@ -45,6 +45,8 @@
           - npm
           - yarn
           - worktrunk
+          - ttf-firacode-nerd
+          - ttf-jetbrains-mono-nerd
     # TODO: Install from AUR?
 
 - name: Gather fnm info
@@ -56,5 +58,7 @@
 - name: Set system node as default
   ansible.builtin.command: "{% if ansible_check_mode %}echo{% else %}fnm default system{% endif %}"
   check_mode: false
-  changed_when: "fnm_list.stdout_lines | select('search', 'system') | select('search', 'default') | length == 0"
+  changed_when: "fnm_list.stdout_lines | select('search', 'system') |
+    select('search', 'default') | length == 0"
+
 # TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
