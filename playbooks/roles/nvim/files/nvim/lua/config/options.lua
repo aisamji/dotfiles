@@ -9,5 +9,7 @@ vim.o.expandtab = true
 vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.mouse = ""
+vim.o.splitright = true
+vim.o.splitbelow = true
 
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme "catppuccin"
