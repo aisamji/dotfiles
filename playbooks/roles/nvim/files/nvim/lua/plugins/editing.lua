@@ -18,12 +18,22 @@ return {
     {
         "hrsh7th/nvim-cmp",
         version = "*",
-        opts = {
-            sources = {
-                { name = "nvim_lsp" },
-                { name = "async_path" },
-            },
-        },
+        config = function()
+            local cmp = require 'cmp'
+            --- @type cmp.ConfigSchema
+            local config = {
+                sources = {
+                    { name = "nvim_lsp" },
+                    { name = "async_path" },
+                },
+                window = {
+                    documentation = cmp.config.window.bordered(),
+                },
+                mapping = cmp.mapping.preset.insert({}),
+            }
+
+            cmp.setup(config)
+        end,
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
             "FelipeLema/cmp-async-path",
