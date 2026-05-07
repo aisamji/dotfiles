@@ -29,7 +29,15 @@ return {
     },
     {
         'nvim-lualine/lualine.nvim',
-        config = true,
+        opts = {
+            options = {
+                globalstatus = true,
+            },
+            sections = {
+                lualine_x = { 'lsp_status', 'filetype' },
+                lualine_y = { 'encoding', 'fileformat' },
+            },
+        },
         dependencies = { 'nvim-tree/nvim-web-devicons' }
     }
 }
