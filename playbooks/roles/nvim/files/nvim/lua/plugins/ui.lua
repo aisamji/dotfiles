@@ -23,6 +23,7 @@ return {
             wk.add({
                 { "<leader>f", group = "fuzzy find" },
                 { "<leader>g", group = "git" },
+                { "<leader>d", group = "diagnostics" },
             })
         end
     },

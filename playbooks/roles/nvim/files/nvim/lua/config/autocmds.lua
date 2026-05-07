@@ -18,3 +18,15 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "WinLeave"
     end
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
+    desc = "Auto-reload buffer modified externally.",
+    command = "if mode() != 'c' | checktime | endif",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "qf",
+    callback = function()
+        vim.keymap.set("n", "<CR>", "<CR>:cclose<CR>:lclose<CR>", { buffer = true, silent = true })
+    end,
+})
