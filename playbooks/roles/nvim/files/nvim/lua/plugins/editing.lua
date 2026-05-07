@@ -29,7 +29,20 @@ return {
                 window = {
                     documentation = cmp.config.window.bordered(),
                 },
-                mapping = cmp.mapping.preset.insert({}),
+                mapping = {
+                    ['<C-j>'] = {
+                        i = cmp.mapping.select_next_item()
+                    },
+                    ['<C-k>'] = {
+                        i = cmp.mapping.select_prev_item()
+                    },
+                    ['<C-l>'] = {
+                        i = cmp.mapping.confirm({ select = false })
+                    },
+                    ['<C-h>'] = {
+                        i = cmp.mapping.abort()
+                    },
+                },
             }
 
             cmp.setup(config)
