@@ -63,27 +63,30 @@ dotfiles() (
     fi
   }
 
+  echo 'Checking for upstream changes.' >&2
   git fetch || (echo "git fetch failed" >&2 && return 2)
 
-  if ! (git diff --quiet HEAD); then
-      echo "Local changes detected. Stashing." >&2
-      git stash push --include-untracked --quiet
-  fi
-
+  # TODO: See if it is possible to only pull if local main is behind origin/main
   if ! (git diff --quiet origin/main main); then
-    echo "Upstream changes detected. Attempting rebase." >&2
+    if ! (git diff --quiet HEAD); then
+        echo "Stashing local changes." >&2
+        git stash push --include-untracked --quiet
+    fi
+
+    echo "Rebasing onto upstream repo." >&2
     if ! (git rebase --empty=drop --quiet); then
-      echo "git rebase resulted in conflicts. Launching in editor." >&2
+      echo "Rebase resulted in conflicts. Launching in editor." >&2
       edit_dotfiles
     fi
-    echo "Attempting push" >&2
-    git push
   fi
 
   if [ "$(git stash list | wc -l)" -ne "0" ]; then
+      echo 'Popping stashed changes.' >&2
       if ! (git stash pop --quiet ); then
-          echo "git stash pop resulted in conflicts. Launching in editor." >&2
+          echo "Stash pop resulted in conflicts. Launching in editor." >&2
           edit_dotfiles
+          echo 'Dropping stash entry.' >&2
+          git stash drop --quiet
       fi
       git restore --staged .
   fi
@@ -104,4 +107,10 @@ dotfiles() (
       return 1
       ;;
   esac
+
+  # TODO: See if it is possible to only push if local main is ahead of origin/main
+  if ! (git diff --quiet origin/main main); then
+    echo "Pushing local commits" >&2
+    git push
+  fi
 )
