@@ -65,18 +65,27 @@ dotfiles() (
 
   git fetch || (echo "git fetch failed" >&2 && return 2)
 
+  if ! (git diff --quiet HEAD); then
+      echo "Local changes detected. Stashing." >&2
+      git stash push --include-untracked --quiet
+  fi
+
   if ! (git diff --quiet origin/main main); then
     echo "Upstream changes detected. Attempting rebase." >&2
-    git rebase --autostash --empty=drop --quiet
-    # if ! (git diff --check --quiet main); then
-    #   echo "git rebase resulted in conflicts. Launching in editor." >&2
-    #   edit_dotfiles
-    #   if [ "$1" == "edit" ]; then
-    #     return 0
-    #   else
-    #     return 2
-    #   fi
-    # fi
+    if ! (git rebase --empty=drop --quiet); then
+      echo "git rebase resulted in conflicts. Launching in editor." >&2
+      edit_dotfiles
+    fi
+    echo "Attempting push" >&2
+    git push
+  fi
+
+  if [ "$(git stash list | wc -l)" -ne "0" ]; then
+      if ! (git stash pop --quiet ); then
+          echo "git stash pop resulted in conflicts. Launching in editor." >&2
+          edit_dotfiles
+      fi
+      git restore --staged .
   fi
 
   case "$1" in
@@ -84,11 +93,9 @@ dotfiles() (
       edit_dotfiles
       ;;
     check)
-      git status
       ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
     sync)
-      git status
       ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
       ;;
     *)
