@@ -27,8 +27,9 @@
 - name: Lock Neovim Plugins
   ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
   register: lazy_restore_cmd
-  changed_when: "lazy_restore_cmd.stdout_lines | select('search', 'switching') | length != 0"
-  # A branch "switch" is only done when a new plugin is installed or an existing plugin is updated to point to another commit.
+  changed_when: "lazy_restore_cmd.stdout_lines | select('search', 'clone|(Previous HEAD)') | length != 0"
+  # A `clone` is only done when installing new plugins
+  # You only have `Previous HEAD` when checking out a different branch
 
 - name: Clean Neovim Plugins
   ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
