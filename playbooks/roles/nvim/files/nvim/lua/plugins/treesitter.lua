@@ -1,18 +1,9 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-
+        build = ":TSUpdate",
+        lazy = false,
         config = function()
-            local configs = require "nvim-treesitter"
-            configs.setup {
-                -- Install parsers synchronously (only applied to `ensure_installed`)
-                sync_install = false,
-
-                -- Automatically install missing parsers when entering buffer
-                -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-                auto_install = true,
-            }
-
             -- Treesitter Custom Parsers
             require("nvim-treesitter.parsers").starlark = {
                 install_info = {
@@ -21,6 +12,16 @@ return {
                     branch = "master",
                 },
             }
+
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = '*',
+                callback = function(event)
+                    local lang = vim.treesitter.language.get_lang(event.match)
+                    if lang then
+                        require('nvim-treesitter').install(lang)
+                    end
+                end,
+            })
 
             -- Custom Filetype Assocations
             vim.filetype.add {
