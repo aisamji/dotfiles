@@ -34,6 +34,7 @@ return {
                     [".*/templates/.*%.ya?ml"] = "helm",
                     ["helmfile.*%.ya?ml"] = "helm",
                     ["Tiltfile"] = "starlark",
+                    [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
                 },
             }
         end,
