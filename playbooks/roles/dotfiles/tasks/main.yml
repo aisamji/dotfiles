@@ -1,0 +1,8 @@
+- name: Symbolic link ripgrep ignore file
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.rgignore"
+    dest: "{{ ansible_facts['env'].HOME }}/.rgignore"
+    state: link
+    force: true
+
+# TODO: Move all task except for those in neovim role into this role.
