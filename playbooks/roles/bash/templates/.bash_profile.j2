@@ -1,7 +1,8 @@
 # Sourced in interactive login bash
 [[ -f ~/.profile ]] && source ~/.profile
 
-{% if ansible_facts['distribution'] == "MacOSX" %}
+{%- if ansible_facts['distribution'] == "MacOSX" %}
+
 if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
   source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 else
@@ -10,7 +11,7 @@ else
     [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
   done
 fi
-{% endif %}
+{%- endif %}
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
