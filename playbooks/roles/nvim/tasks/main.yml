@@ -3,6 +3,8 @@
     paths: "{{ role_path }}/files/nvim"
     recurse: true
     file_type: file
+    excludes:
+      - lazy-lock.json
   register: nvim_config
 
 - name: Copy to .config/nvim
@@ -13,6 +15,13 @@
     mode: "0644"
     directory_mode: "0755"
   loop: "{{ nvim_config.files }}"
+
+- name: Symbolic link lazy-lock.json
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/nvim/lazy-lock.json"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
+    state: link
+    force: true
 
 # Lazy Commands Docs: https://lazy.folke.io/usage#-commands
 - name: Lock Neovim Plugins
