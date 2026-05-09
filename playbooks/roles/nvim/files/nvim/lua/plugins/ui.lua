@@ -32,6 +32,7 @@ return {
         opts = {
             options = {
                 globalstatus = true,
+                theme = 'tokyonight',
             },
             sections = {
                 lualine_x = { 'lsp_status', 'filetype' },
@@ -39,5 +40,14 @@ return {
             },
         },
         dependencies = { 'nvim-tree/nvim-web-devicons' }
-    }
+    },
+    {
+        'folke/tokyonight.nvim',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require('tokyonight').setup {}
+            vim.cmd [[colorscheme tokyonight]]
+        end
+    },
 }
