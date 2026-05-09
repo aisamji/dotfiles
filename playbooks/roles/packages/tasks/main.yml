@@ -27,6 +27,8 @@
         name:
           - font-jetbrains-mono-nerd-font
           - font-fira-code-nerd-font
+          - iterm2
+    # TODO: Set homebrew bash as login shell
 
 - name: Install packages (Arch)
   when: ansible_facts['distribution'] == "Archlinux"
