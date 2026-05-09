@@ -37,7 +37,7 @@ return {
                         i = cmp.mapping.select_prev_item()
                     },
                     ['<C-l>'] = {
-                        i = cmp.mapping.confirm({ select = false })
+                        i = cmp.mapping.confirm({ select = true })
                     },
                     ['<C-h>'] = {
                         i = cmp.mapping.abort()
