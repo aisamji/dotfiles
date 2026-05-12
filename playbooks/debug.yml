@@ -9,3 +9,9 @@
     - name: Print package_manager
       ansible.builtin.debug:
         msg: "{{ ansible_facts['pkg_mgr'] }}"
+    - name: Print ansible_facts
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts }}"
+    - name: Print mount for `/`
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['mounts'] | selectattr('mount', 'equalto', '/') | first | default(dict()) }}"
