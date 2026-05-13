@@ -6,12 +6,17 @@ return {
             {
                 '<leader>ff',
                 require('telescope.builtin').find_files,
-                desc = 'Find File (Regex)'
+                desc = 'Fuzzy Find File'
             },
             {
-                '<leader>fg',
+                '<leader>ft',
                 require('telescope.builtin').live_grep,
-                desc = 'Find Text (Regex)'
+                desc = 'Fuzzy Find Text'
+            },
+            {
+                '<leader>fb',
+                require('telescope.builtin').buffers,
+                desc = 'Fuzzy Find Buffer'
             },
         },
         opts = {
