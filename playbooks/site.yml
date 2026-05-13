@@ -5,8 +5,6 @@
 
   roles:
     - role: packages
-    - role: nvim
-      tags: [neovim, nvim]
     - role: git
       tags: [git]
     - role: claude-code
@@ -15,3 +13,88 @@
       tags: [bash, shell]
     - role: dotfiles
       tags: [dotfiles]
+
+- name: Configure Neovim
+  hosts:
+    - personal
+    - work
+
+  tasks:
+    - name: Gather neovim config files
+      ansible.builtin.find:
+        paths: "{{ playbook_dir }}/files/nvim"
+        recurse: true
+        file_type: file
+        excludes:
+          - lazy-lock.json
+          - lazy.lua
+      register: nvim_config
+
+    - name: Copy lazy bootstrap
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/files/nvim/lua/config/lazy.lua"
+        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lua/config/"
+        mode: "0644"
+        directory_mode: "0755"
+      notify:
+        - Clean Neovim Plugins
+        - Install Neovim Plugins
+        - Sync back lazy-lock
+
+    - name: Copy plugin specs
+      ansible.builtin.copy:
+        src: "{{ item.path }}"
+        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname |
+          relpath(playbook_dir + '/files/nvim') }}/"
+        mode: "0644"
+        directory_mode: "0755"
+      loop: "{{ nvim_config.files | selectattr('path', 'search', 'lua/plugins/') }}"
+      notify:
+        - Clean Neovim Plugins
+        - Install Neovim Plugins
+        - Sync back lazy-lock
+
+    - name: Copy lazy-lock.json
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/files/nvim/lazy-lock.json"
+        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
+        mode: "0644"
+        directory_mode: "0755"
+      notify:
+        - Lock Neovim Plugins
+        - Clean Neovim Plugins
+
+    - name: Copy remaining neovim config files
+      ansible.builtin.copy:
+        src: "{{ item.path }}"
+        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname |
+          relpath(playbook_dir + '/files/nvim') }}/"
+        mode: "0644"
+        directory_mode: "0755"
+      loop: "{{ nvim_config.files | rejectattr('path', 'search', 'lua/plugins/') }}"
+
+  # Lazy Commands Docs: https://lazy.folke.io/usage#-commands
+  handlers:
+    - name: Lock Neovim Plugins
+      ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
+      register: lazy_restore_cmd
+      changed_when: "lazy_restore_cmd.stdout_lines | select('search', 'clone|(Previous HEAD)') | length != 0"
+      # A `clone` is only done when installing new plugins
+      # You only have `Previous HEAD` when checking out a different branch
+
+    - name: Install Neovim Plugins
+      ansible.builtin.command: nvim --headless "+Lazy! install" +qa
+      register: lazy_install_cmd
+      changed_when: "lazy_install_cmd.stdout_lines | length != 0"
+
+    - name: Clean Neovim Plugins
+      ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
+      register: lazy_clean_cmd
+      changed_when: "lazy_clean_cmd.stdout_lines | length != 0"
+
+    - name: Sync back lazy-lock
+      ansible.builtin.copy:
+        src: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
+        dest: "{{ playbook_dir }}/files/nvim/lazy-lock.json"
+        mode: "0644"
+        directory_mode: "0755"

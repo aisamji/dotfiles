@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: '644'
-  become: true
+  become: "{{ not ansible_check_mode }}"
   when: "backup_device_uuid | length > 0"
 
 # TODO: Should `timeshift --check` be added as a handler? In which case, timeshift would be its own play
