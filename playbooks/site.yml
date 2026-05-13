@@ -39,7 +39,6 @@
       notify:
         - Clean Neovim Plugins
         - Install Neovim Plugins
-        - Sync back lazy-lock
 
     - name: Copy plugin specs
       ansible.builtin.copy:
@@ -52,7 +51,6 @@
       notify:
         - Clean Neovim Plugins
         - Install Neovim Plugins
-        - Sync back lazy-lock
 
     - name: Copy lazy-lock.json
       ansible.builtin.copy:
@@ -91,10 +89,3 @@
       ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
       register: lazy_clean_cmd
       changed_when: "lazy_clean_cmd.stdout_lines | length != 0"
-
-    - name: Sync back lazy-lock
-      ansible.builtin.copy:
-        src: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
-        dest: "{{ playbook_dir }}/files/nvim/lazy-lock.json"
-        mode: "0644"
-        directory_mode: "0755"
