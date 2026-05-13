@@ -5,8 +5,9 @@ vim.keymap.set("n", "grl", function()
     vim.bo.modifiable = false
 end, { desc = "vim.lsp.log" })
 
-vim.keymap.set("n", "<leader>ds", function() vim.diagnostic.setloclist() end, { desc = "Show file diagnostics" })
-vim.keymap.set("n", "<leader>dS", function() vim.diagnostic.setqflist() end, { desc = "Show workspace diagnostics" })
+vim.keymap.set("n", "<leader>dl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+vim.keymap.set("n", "<leader>db", vim.diagnostic.setloclist, { desc = "Show buffer diagnostics" })
+vim.keymap.set("n", "<leader>dw", vim.diagnostic.setqflist, { desc = "Show workspace diagnostics" })
 
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
