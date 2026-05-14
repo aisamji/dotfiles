@@ -97,27 +97,17 @@ dotfiles() (
       git restore --staged .
   fi
 
-  case "$1" in
-    edit)
-      echo 'Launching editor.' >&2
-      edit_dotfiles
+  if [ "$1" == "check" ]; then
+    echo 'Comparing against live environment.' >&2
+    ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }} || return 1
+  else
+      if [ "$1" == "edit" ]; then
+          echo 'Launching editor.' >&2
+          edit_dotfiles
+      fi
       echo 'Running playbook.' >&2
-      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
-      ;;
-    check)
-      echo 'Comparing against live environment.' >&2
-      ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
-      ;;
-    sync)
-      echo 'Running playbook.' >&2
-      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
-      ;;
-    *)
-      echo "Usage: dotfiles <subcommand>" >&2
-      echo "Subcommands: edit, check, sync" >&2
-      return 1
-      ;;
-  esac
+      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }} || return 1
+  fi
 
   # TODO: See if it is possible to only push if local main is ahead of origin/main
   if ! (git diff --quiet origin/main main); then
