@@ -1,9 +1,11 @@
-- name: Symbolic link ripgrep ignore file
+- name: Symbolic link files
   ansible.builtin.file:
-    src: "{{ role_path }}/files/.rgignore"
-    dest: "{{ ansible_facts['env'].HOME }}/.rgignore"
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "{{ ansible_facts['env'].HOME }}/{{ item }}"
     state: link
     force: true
+  loop:
+    - .rgignore
 
 # TODO: Add task to symbolic link directories for those that need the entire directory.
 # TODO: Move all task except for those in neovim and packages role into this role.
