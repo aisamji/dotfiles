@@ -6,18 +6,18 @@
     force: true
 
 # TODO: Move all task except for those in neovim role into this role.
-- name: Find timeshift device UUID
-  ansible.builtin.set_fact:
-    backup_device_uuid: "{{ ansible_facts['mounts'] | selectattr('mount', 'equalto', '/') | map(attribute='uuid') | first | default('') }}"
-
-- name: Template timeshift config file
-  ansible.builtin.template:
-    src: "timeshift.json.j2"
-    dest: "/etc/timeshift/timeshift.json"
-    owner: root
-    group: root
-    mode: '644'
-  become: "{{ not ansible_check_mode }}"
-  when: "backup_device_uuid | length > 0"
+# - name: Find timeshift device UUID
+#   ansible.builtin.set_fact:
+#     backup_device_uuid: "{{ ansible_facts['mounts'] | selectattr('mount', 'equalto', '/') | map(attribute='uuid') | first | default('') }}"
+#
+# - name: Template timeshift config file
+#   ansible.builtin.template:
+#     src: "timeshift.json.j2"
+#     dest: "/etc/timeshift/timeshift.json"
+#     owner: root
+#     group: root
+#     mode: '644'
+#   become: "{{ not ansible_check_mode }}"
+#   when: "backup_device_uuid | length > 0"
 
 # TODO: Should `timeshift --check` be added as a handler? In which case, timeshift would be its own play
