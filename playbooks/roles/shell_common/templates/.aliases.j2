@@ -68,6 +68,7 @@ dotfiles() (
 
   # TODO: See if it is possible to only pull if local main is behind origin/main
   if ! (git diff --quiet origin/main main); then
+    echo 'Upstream changes detected.' >&2
     if ! (git diff --quiet HEAD); then
         echo "Stashing local changes." >&2
         git stash push --include-untracked --quiet
@@ -76,29 +77,39 @@ dotfiles() (
     echo "Rebasing onto upstream repo." >&2
     if ! (git rebase --empty=drop --quiet); then
       echo "Rebase resulted in conflicts. Launching in editor." >&2
+      sleep 1
       edit_dotfiles
     fi
+  else
+    echo 'No upstream changes.' >&2
   fi
 
   if [ "$(git stash list | wc -l)" -ne "0" ]; then
       echo 'Popping stashed changes.' >&2
       if ! (git stash pop --quiet ); then
           echo "Stash pop resulted in conflicts. Launching in editor." >&2
+          sleep 1
           edit_dotfiles
           echo 'Dropping stash entry.' >&2
           git stash drop --quiet
       fi
+      echo 'Restoring index.' >&2
       git restore --staged .
   fi
 
   case "$1" in
     edit)
+      echo 'Launching editor.' >&2
       edit_dotfiles
+      echo 'Running playbook.' >&2
+      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
       ;;
     check)
+      echo 'Comparing against live environment.' >&2
       ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ purpose }}
       ;;
     sync)
+      echo 'Running playbook.' >&2
       ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ purpose }}
       ;;
     *)
@@ -110,7 +121,7 @@ dotfiles() (
 
   # TODO: See if it is possible to only push if local main is ahead of origin/main
   if ! (git diff --quiet origin/main main); then
-    echo "Pushing local commits" >&2
+    echo "Pushing local commits to upstream repo." >&2
     git push
   fi
 )
