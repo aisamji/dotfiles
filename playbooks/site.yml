@@ -14,6 +14,8 @@
     - role: dotfiles
       tags: [dotfiles]
 
+# TODO: Make packages into their own play. Avoids noisy neighbor issues where failures in unrelated applications caused neovim handlers to fail.
+
 - name: Configure Neovim
   hosts:
     - personal
