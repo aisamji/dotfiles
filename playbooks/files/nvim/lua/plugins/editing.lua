@@ -21,7 +21,7 @@ return {
         "hrsh7th/nvim-cmp",
         version = "*",
         config = function()
-            local cmp = require 'cmp'
+            local cmp = require "cmp"
             --- @type cmp.ConfigSchema
             local config = {
                 sources = {
@@ -32,17 +32,17 @@ return {
                     documentation = cmp.config.window.bordered(),
                 },
                 mapping = {
-                    ['<C-j>'] = {
-                        i = cmp.mapping.select_next_item()
+                    ["<C-j>"] = {
+                        i = cmp.mapping.select_next_item(),
                     },
-                    ['<C-k>'] = {
-                        i = cmp.mapping.select_prev_item()
+                    ["<C-k>"] = {
+                        i = cmp.mapping.select_prev_item(),
                     },
-                    ['<C-l>'] = {
-                        i = cmp.mapping.confirm({ select = true })
+                    ["<C-l>"] = {
+                        i = cmp.mapping.confirm { select = true },
                     },
-                    ['<C-h>'] = {
-                        i = cmp.mapping.abort()
+                    ["<C-h>"] = {
+                        i = cmp.mapping.abort(),
                     },
                 },
             }
@@ -64,5 +64,12 @@ return {
                 { path = "${3rd}/luv/library", words = { "vim%.uv" } },
             },
         },
+    },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {},
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
     },
 }
