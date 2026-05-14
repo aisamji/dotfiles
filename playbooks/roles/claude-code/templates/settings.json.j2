@@ -41,6 +41,7 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "ybor-standards@p6m-run-plugins": true
 {% endif %}
+    "cq@cq": true
   },
   "extraKnownMarketplaces": {
 {% if purpose == "work" %}
@@ -50,8 +51,14 @@
         "repo": "p6m-run/claude-plugins"
       },
       "autoUpdate": true
-    }
+    },
 {% endif %}
+    "cq": {
+      "source": {
+        "source": "github",
+        "repo": "mozilla-ai/cq"
+      }
+    }
   },
   "effortLevel": "high",
   "model": "sonnet"
