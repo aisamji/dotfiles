@@ -39,6 +39,7 @@
   "enabledPlugins": {
 {% if purpose == "work" %}
     "pr-review-toolkit@claude-plugins-official": true,
+    "acli@aisamji-plugins": true,
 {% endif %}
     "cq@cq": true
   },
@@ -57,6 +58,13 @@
         "source": "github",
         "repo": "mozilla-ai/cq"
       }
+    },
+    "aisamji-plugins": {
+        "source": {
+            "source": "github",
+            "repo": "aisamji/claude-plugins"
+        },
+        "autoUpdate": true
     }
   },
   "effortLevel": "high",
