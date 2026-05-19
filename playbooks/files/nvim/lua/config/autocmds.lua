@@ -39,10 +39,14 @@ vim.api.nvim_create_autocmd("User", {
         local dest_file = vim.fn.expand "~/.dotfiles/playbooks/files/nvim/lazy-lock.json"
         local dotfiles_repo = vim.fn.expand "~/.dotfiles"
 
-        if not vim.uv.fs_stat(dest_file) or (vim.fn.system { "diff", src_file, dest_file } ~= "") then
-            vim.uv.fs_copyfile(src_file, dest_file, { excl = false, ficlone = false, ficlone_force = false })
-            vim.fn.system { "git", "-C", dotfiles_repo, "add", dest_file }
-            vim.fn.system { "git", "-C", dotfiles_repo, "commit", "-m", "chore(neovim): lazy update" }
-        end
+        -- These events are triggered before the lock file is updated, resulting in no diff.
+        -- So vim.schedule will trigger this function on the next event, by which time the lock file will be updated.
+        vim.schedule(function()
+            if not vim.uv.fs_stat(dest_file) or (vim.fn.system { "diff", src_file, dest_file } ~= "") then
+                vim.uv.fs_copyfile(src_file, dest_file, { excl = false, ficlone = false, ficlone_force = false })
+                vim.fn.system { "git", "-C", dotfiles_repo, "add", dest_file }
+                vim.fn.system { "git", "-C", dotfiles_repo, "commit", "-m", "chore(neovim): lazy update" }
+            end
+        end)
     end,
 })
