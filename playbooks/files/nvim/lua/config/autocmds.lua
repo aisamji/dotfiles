@@ -35,14 +35,14 @@ vim.api.nvim_create_autocmd("User", {
     pattern = { "LazyUpdate", "LazyInstall", "LazyClean" },
     desc = "Commit lazy-lock to dotfiles repo.",
     callback = function(_)
-        local src_file = "~/.config/nvim/lazy-lock.json"
-        local dest_file = "~/.dotfiles/playbooks/files/nvim/lazy-lock.json"
-        local dotfiles_repo = "~/.dotfiles"
+        local src_file = vim.fn.expand "~/.config/nvim/lazy-lock.json"
+        local dest_file = vim.fn.expand "~/.dotfiles/playbooks/files/nvim/lazy-lock.json"
+        local dotfiles_repo = vim.fn.expand "~/.dotfiles"
 
         if not vim.uv.fs_stat(dest_file) or (vim.fn.system { "diff", src_file, dest_file } ~= "") then
             vim.uv.fs_copyfile(src_file, dest_file, { excl = false, ficlone = false, ficlone_force = false })
-            vim.fn.system { "git", "add", "-C", dotfiles_repo, dest_file }
-            vim.fn.system { "git", "commit", "-C", dotfiles_repo, "-m", "chore(neovim): Lazy update" }
+            vim.fn.system { "git", "-C", dotfiles_repo, "add", dest_file }
+            vim.fn.system { "git", "-C", dotfiles_repo, "commit", "-m", "chore(neovim): lazy update" }
         end
     end,
 })
