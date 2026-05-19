@@ -29,30 +29,7 @@
         file_type: file
         excludes:
           - lazy-lock.json
-          - lazy.lua
       register: nvim_config
-
-    - name: Copy lazy bootstrap
-      ansible.builtin.copy:
-        src: "{{ playbook_dir }}/files/nvim/lua/config/lazy.lua"
-        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lua/config/"
-        mode: "0644"
-        directory_mode: "0755"
-      notify:
-        - Clean Neovim Plugins
-        - Install Neovim Plugins
-
-    - name: Copy plugin specs
-      ansible.builtin.copy:
-        src: "{{ item.path }}"
-        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname |
-          relpath(playbook_dir + '/files/nvim') }}/"
-        mode: "0644"
-        directory_mode: "0755"
-      loop: "{{ nvim_config.files | selectattr('path', 'search', 'lua/plugins/') }}"
-      notify:
-        - Clean Neovim Plugins
-        - Install Neovim Plugins
 
     - name: Copy lazy-lock.json
       ansible.builtin.copy:
@@ -71,7 +48,7 @@
           relpath(playbook_dir + '/files/nvim') }}/"
         mode: "0644"
         directory_mode: "0755"
-      loop: "{{ nvim_config.files | rejectattr('path', 'search', 'lua/plugins/') }}"
+      loop: "{{ nvim_config.files }}"
 
   # Lazy Commands Docs: https://lazy.folke.io/usage#-commands
   handlers:
@@ -81,11 +58,6 @@
       changed_when: "lazy_restore_cmd.stdout_lines | select('search', 'clone|(Previous HEAD)') | length != 0"
       # A `clone` is only done when installing new plugins
       # You only have `Previous HEAD` when checking out a different branch
-
-    - name: Install Neovim Plugins
-      ansible.builtin.command: nvim --headless "+Lazy! install" +qa
-      register: lazy_install_cmd
-      changed_when: "lazy_install_cmd.stdout_lines | length != 0"
 
     - name: Clean Neovim Plugins
       ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
