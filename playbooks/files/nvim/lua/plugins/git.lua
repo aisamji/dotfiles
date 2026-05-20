@@ -10,13 +10,6 @@ return {
                 end,
                 desc = "Git blame line",
             },
-            {
-                "<leader>gbb",
-                function()
-                    vim.cmd.Gitsigns "blame"
-                end,
-                desc = "Git blame buffer",
-            },
         },
         config = true,
     },

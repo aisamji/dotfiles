@@ -23,6 +23,11 @@ return {
                 require("telescope.builtin").git_status,
                 desc = "Git diff (Quick)",
             },
+            {
+                "<leader>gbb",
+                require("telescope.builtin").git_bcommits,
+                desc = "Git blame buffer",
+            },
         },
         opts = {
             defaults = {
