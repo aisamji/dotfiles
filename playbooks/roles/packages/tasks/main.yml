@@ -13,7 +13,6 @@
           - jq
           - yq
           - fzf
-          - claude-code@latest
           - fnm
           - kubectl
           - tree-sitter-cli
@@ -68,4 +67,34 @@
   check_mode: false
   changed_when: "fnm_list.stdout_lines | select('search', 'system') |
     select('search', 'default') | length == 0"
-# TODO: Install claude-code with native curl script (use checksums and code signing). Remove from homebrew
+
+- name: Check if claude-code is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['env'].HOME }}/.local/bin/claude"
+  register: claude_code_binary
+
+- name: Create temp directory for claude-code build
+  when: "not claude_code_binary.stat.exists"
+  ansible.builtin.tempfile:
+    state: directory
+    prefix: claude_code_build_
+  register: claude_code_build
+
+- name: Install claude-code with native installer
+  when: "not claude_code_binary.stat.exists"
+  block:
+    - name: Download claude-code bootstrap script
+      ansible.builtin.get_url:
+        url: "https://downloads.claude.ai/claude-code-releases/bootstrap.sh"
+        dest: "{{ claude_code_build.path }}/bootstrap.sh"
+        mode: "0700"
+        checksum: "sha256:b315b46925a9bfb9422f2503dd5aa649f680832f4c076b22d87c39d578c3d830"
+
+    - name: Run bootstrap script
+      ansible.builtin.command: "{{ claude_code_build.path }}/bootstrap.sh"
+
+  always:
+    - name: Clean up temp directory
+      ansible.builtin.file:
+        state: absent
+        path: "{{ claude_code_build.path }}"
