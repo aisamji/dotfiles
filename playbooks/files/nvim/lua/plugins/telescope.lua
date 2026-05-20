@@ -1,22 +1,22 @@
 return {
     {
-        'nvim-telescope/telescope.nvim',
-        version = '*',
+        "nvim-telescope/telescope.nvim",
+        version = "*",
         keys = {
             {
-                '<leader>ff',
-                require('telescope.builtin').find_files,
-                desc = 'Fuzzy Find File'
+                "<leader>ff",
+                require("telescope.builtin").find_files,
+                desc = "Fuzzy Find File",
             },
             {
-                '<leader>ft',
-                require('telescope.builtin').live_grep,
-                desc = 'Fuzzy Find Text'
+                "<leader>ft",
+                require("telescope.builtin").live_grep,
+                desc = "Fuzzy Find Text",
             },
             {
-                '<leader>fb',
-                require('telescope.builtin').buffers,
-                desc = 'Fuzzy Find Buffer'
+                "<leader>fb",
+                require("telescope.builtin").buffers,
+                desc = "Fuzzy Find Buffer",
             },
         },
         opts = {
@@ -38,15 +38,15 @@ return {
                 find_files = {
                     hidden = true,
                     follow = true,
-                }
+                },
             },
         },
         dependencies = {
-            'nvim-lua/plenary.nvim',
+            "nvim-lua/plenary.nvim",
             -- optional but recommended
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-            'nvim-tree/nvim-web-devicons',
-        }
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            "nvim-tree/nvim-web-devicons",
+        },
     },
     {
         "nvim-telescope/telescope-ui-select.nvim",
@@ -62,7 +62,7 @@ return {
             }
         end,
         dependencies = {
-            'nvim-telescope/telescope.nvim',
-        }
+            "nvim-telescope/telescope.nvim",
+        },
     },
 }
