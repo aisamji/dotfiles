@@ -4,18 +4,18 @@ return {
         event = "VeryLazy",
         keys = {
             {
-                "<leader>gb",
+                "<leader>gbl",
                 function()
                     vim.cmd.Gitsigns "blame_line"
                 end,
                 desc = "Git blame line",
             },
             {
-                "<leader>gB",
+                "<leader>gbb",
                 function()
                     vim.cmd.Gitsigns "blame"
                 end,
-                desc = "Git blame file",
+                desc = "Git blame buffer",
             },
         },
         config = true,

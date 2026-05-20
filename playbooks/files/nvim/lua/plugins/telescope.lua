@@ -18,6 +18,11 @@ return {
                 require("telescope.builtin").buffers,
                 desc = "Fuzzy Find Buffer",
             },
+            {
+                "<leader>gd",
+                require("telescope.builtin").git_status,
+                desc = "Git diff (Quick)",
+            },
         },
         opts = {
             defaults = {
