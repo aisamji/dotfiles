@@ -15,6 +15,10 @@ if which archetect > /dev/null 2> /dev/null; then
   eval "$(archetect completions bash)"
 fi
 
+if which chainsaw > /dev/null 2> /dev/null; then
+    eval "$(chainsaw completion bash)"
+fi
+
 [ -f ~/.aliases ] && source ~/.aliases
 complete -o default -F __start_kubectl k
 
