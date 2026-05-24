@@ -38,6 +38,8 @@ return {
             })
 
             -- Custom Filetype Assocations
+            vim.treesitter.language.register("starlark", "tiltfile")
+
             vim.filetype.add {
                 extension = {
                     gotmpl = "gotmpl",
@@ -47,8 +49,6 @@ return {
                     [".*/templates/.*%.tpl"] = "helm",
                     [".*/templates/.*%.ya?ml"] = "helm",
                     ["helmfile.*%.ya?ml"] = "helm",
-                    -- TODO: Fix Tiltfile filetype recognition
-                    ["Tiltfile"] = "starlark",
                     [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
                 },
             }
