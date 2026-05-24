@@ -1,1 +1,1 @@
-vim.bo.indentkeys = {}
+vim.bo.indentkeys = ""
