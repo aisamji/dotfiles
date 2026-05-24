@@ -30,7 +30,6 @@ return {
             vim.api.nvim_create_autocmd("User", {
                 pattern = "TSUpdate",
                 callback = function()
-                    vim.bo.syntax = ""
                     vim.treesitter.start()
                     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     -- vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -48,6 +47,7 @@ return {
                     [".*/templates/.*%.tpl"] = "helm",
                     [".*/templates/.*%.ya?ml"] = "helm",
                     ["helmfile.*%.ya?ml"] = "helm",
+                    -- TODO: Fix Tiltfile filetype recognition
                     ["Tiltfile"] = "starlark",
                     [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
                 },
