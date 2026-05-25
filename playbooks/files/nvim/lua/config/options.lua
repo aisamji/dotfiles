@@ -11,6 +11,5 @@ vim.o.smartindent = true
 vim.o.mouse = ""
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.hl.priorities.semantic_tokens = 75
 
 vim.cmd.colorscheme "catppuccin"
