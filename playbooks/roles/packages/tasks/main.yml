@@ -54,7 +54,15 @@
           - worktrunk
           - ttf-firacode-nerd
           - ttf-jetbrains-mono-nerd
+          - pacman-contrib
     # TODO: Install from AUR?
+
+    - name: Enable paccache timer
+      ansible.builtin.systemd:
+        name: paccache.timer
+        state: started
+        enabled: true
+        scope: system
 
 - name: Gather fnm info
   ansible.builtin.command: fnm list
