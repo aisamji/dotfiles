@@ -22,6 +22,9 @@
     - work
 
   tasks:
+    # These files need to be copied because a merge conflict would break neovim
+    # and neovim is my tool of choice for resolving conflicts.
+    # lazy-lock is excluded because it needs special handling to notify the handlers.
     - name: Gather neovim config files
       ansible.builtin.find:
         paths: "{{ playbook_dir }}/files/nvim"
