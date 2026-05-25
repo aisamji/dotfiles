@@ -23,7 +23,8 @@ else
     echo 'Ansible already installed'
 fi
 
-# TODO: Install Ansible and Python requirements
+echo 'Installing dependencies'
+ansible-galaxy collection install -r requirements.yml
 
 # TODO: Clone the dotfiles repo, to support downloading and running just the script.
 ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit "$1"

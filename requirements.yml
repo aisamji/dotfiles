@@ -1,0 +1,6 @@
+collections:
+  - name: git@github.com:kewlfft/ansible-aur.git
+    type: git
+    version: "v0.13.1"
+  - name: community.general
+    version: ">=12.6,<13"
