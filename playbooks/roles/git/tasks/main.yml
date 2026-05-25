@@ -14,7 +14,7 @@
 
 - name: Symbolic link .gitconfig.d
   ansible.builtin.file:
-    src: "{{ role_path }}/files/.gitconfig.d/{{ purpose }}"
+    src: "{{ role_path }}/files/.gitconfig.d/{{ ansible_local.identity.purpose }}"
     path: "{{ ansible_facts['env'].HOME }}/.gitconfig.d"
     state: link
     force: true

@@ -24,7 +24,7 @@ complete -o default -F __start_kubectl k
 
 [ -f ~/.secrets ] && source ~/.secrets
 
-{% if purpose == "work" %}
+{% if ansible_local.identity.purpose == "work" %}
 # Work Settings
 
 # Add alias for local plugin development with claude code.

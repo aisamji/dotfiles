@@ -8,12 +8,8 @@ personal_grp:
   hosts:
     personal:
       ansible_connection: local
-  vars:
-    purpose: personal
 
 work_grp:
   hosts:
     work:
       ansible_connection: local
-  vars:
-    purpose: work

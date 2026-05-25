@@ -7,7 +7,7 @@
 
 ## Installed CLIs
 
-{% if purpose == "work" %}
+{% if ansible_local.identity.purpose == "work" %}
 - `acli`= cli for interacting with Atlassian products (Jira, Confluence)
 - `aws` = cli for managing aws resources
 {% endif %}
