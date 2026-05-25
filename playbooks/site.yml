@@ -1,7 +1,5 @@
 - name: Configure Machine
-  hosts:
-    - personal
-    - work
+  hosts: localhost
 
   roles:
     - role: packages
@@ -17,9 +15,7 @@
 # TODO: Make packages into their own play. Avoids noisy neighbor issues where failures in unrelated applications caused neovim handlers to fail.
 
 - name: Configure Neovim
-  hosts:
-    - personal
-    - work
+  hosts: localhost
 
   tasks:
     # These files need to be copied because a merge conflict would break neovim

@@ -55,14 +55,14 @@ dotfiles() (
 
   if [ "$1" == "check" ]; then
     echo 'Comparing against live environment.' >&2
-    ansible-playbook --check --diff playbooks/site.yml --inventory inventories/host.yml --limit {{ ansible_local.identity.purpose }} || return 1
+    ansible-playbook --check --diff playbooks/site.yml || return 1
   else
       if [ "$1" == "edit" ]; then
           echo 'Launching editor.' >&2
           edit_dotfiles
       fi
       echo 'Running playbook.' >&2
-      ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit {{ ansible_local.identity.purpose }} || return 1
+      ansible-playbook --diff playbooks/site.yml --ask-become-pass || return 1
   fi
 
   # TODO: See if it is possible to only push if local main is ahead of origin/main

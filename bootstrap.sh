@@ -26,5 +26,17 @@ fi
 echo 'Installing dependencies'
 ansible-galaxy collection install -r requirements.yml
 
+echo 'Select a purpose:'
+echo '  1) personal'
+echo '  2) work'
+read -p 'Enter choice [1-2]: ' choice
+case "$choice" in
+    1) purpose="personal" ;;
+    2) purpose="work" ;;
+    *) echo "Invalid choice: $choice" && exit 1 ;;
+esac
+sudo mkdir -p /etc/ansible/facts.d
+printf '{"purpose": "%s"}\n' "$purpose" | sudo tee /etc/ansible/facts.d/identity.fact > /dev/null
+
 # TODO: Clone the dotfiles repo, to support downloading and running just the script.
-ansible-playbook --diff playbooks/site.yml --inventory inventories/host.yml --ask-become-pass --limit "$1"
+ansible-playbook --diff playbooks/site.yml --ask-become-pass
