@@ -1,5 +1,8 @@
 - name: Configure Machine
   hosts: localhost
+  gather_subset:
+    - '!all'
+    - local
 
   roles:
     - role: packages
@@ -16,6 +19,8 @@
 
 - name: Configure Neovim
   hosts: localhost
+  gather_subset:
+    - '!all'
 
   tasks:
     # These files need to be copied because a merge conflict would break neovim
