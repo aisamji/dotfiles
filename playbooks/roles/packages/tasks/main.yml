@@ -1,32 +1,48 @@
 - name: Install packages (Homebrew)
   when: ansible_facts['distribution'] == "MacOSX"
   block:
-    # TODO: Configure taps
+    - name: Configure taps (all purposes)
+      community.general.homebrew_tap:
+        name:
+          - archetect/tap
+          - tonedefdev/terracreds
+          - warrensbox/tap
+        state: present
+    - name: Configure taps (work)
+      when: ansible_local.identity.purpose == "work"
+      community.general.homebrew_tap:
+        name:
+          - atlassian/acli
+          - azure/kubelogin
+          - derailed/k9s
+          - hashicorp/tap
+          - jonbito/tap
+          - kcl-lang/tap
+          - kyverno/chainsaw
+          - p6m-dev/tap
+        state: present
+    - name: Set formulas
+      ansible.builtin.set_fact:
+        homebrew_formulas_install: "{{ homebrew_formulas.all }}"
+    - name: Add work formulas
+      when: ansible_local.identity.purpose == "work"
+      ansible.builtin.set_fact:
+        homebrew_formulas_install: "{{ homebrew_formulas_install + homebrew_formulas.work }}"
     - name: Install formulas
       community.general.homebrew:
         state: present
-        name:
-          - neovim
-          - git
-          - gh
-          - bash
-          - jq
-          - yq
-          - fzf
-          - fnm
-          - kubectl
-          - tree-sitter-cli
-          - ripgrep
-          - node
-          - yarn
-          - worktrunk
+        name: "{{ homebrew_formulas_install }}"
     - name: Install casks
       community.general.homebrew_cask:
         state: present
+        # TODO: add ansible_become_pass to variables/vault. Remove `-K` flag in script when running.
+        # sudo_password: "{{ ansible_become_pass }}"
         name:
           - font-jetbrains-mono-nerd-font
           - font-fira-code-nerd-font
           - iterm2
+          - wireshark-app
+          - hammerspoon
     # TODO: Set homebrew bash as login shell
 
 - name: Install packages (Arch)

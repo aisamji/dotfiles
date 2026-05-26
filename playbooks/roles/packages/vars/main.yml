@@ -1,0 +1,20 @@
+homebrew_formulas:
+  all:
+    - neovim
+    - git
+    - gh
+    - bash
+    - jq
+    - yq
+    - fzf
+    - fnm
+    - kubectl
+    - tree-sitter-cli
+    - ripgrep
+    - node
+    - yarn
+    - worktrunk
+  work:
+    - chainsaw
+    - p6m
+    - acli
