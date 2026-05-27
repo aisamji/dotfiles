@@ -45,7 +45,8 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "acli@aisamji-plugins": true,
 {% endif %}
-    "cq@cq": true
+    "cq@cq": true,
+    "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
 {% if ansible_local.identity.purpose == "work" %}
@@ -61,6 +62,12 @@
       "source": {
         "source": "github",
         "repo": "mozilla-ai/cq"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     },
     "aisamji-plugins": {
