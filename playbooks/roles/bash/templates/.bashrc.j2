@@ -1,3 +1,8 @@
+{% if ansible_facts['distribution'] == "MacOSX" %}
+# Homebrew bash completion is not built-in and needs to be sourced first
+source $(brew --prefix)/etc/bash_completion.d/kubectl
+{% endif %}
+
 # Common Settings
 export PS1="\u@\h:\w\$ "
 

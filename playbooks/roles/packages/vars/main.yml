@@ -4,6 +4,7 @@ homebrew_formulas:
     - git
     - gh
     - bash
+    - bash-completion@2
     - jq
     - yq
     - fzf
