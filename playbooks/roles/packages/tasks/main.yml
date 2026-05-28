@@ -71,7 +71,28 @@
           - ttf-firacode-nerd
           - ttf-jetbrains-mono-nerd
           - pacman-contrib
-    # TODO: Install from AUR?
+    - name: Create aur_builder user
+      ansible.builtin.user:
+        name: aur_builder
+        create_home: true
+        group: wheel
+
+    - name: Allow aur_builder to run sudo pacman without password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/11-install-aur_builder
+        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+        create: true
+        mode: "0644"
+        validate: 'visudo -cf %s'
+
+    - name: Install AUR packages
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        use: auto
+        state: present
+        name:
+          - cnrdrvcups-lb
+          - brother-mfc-l2710dw
 
     - name: Enable paccache timer
       ansible.builtin.systemd:
