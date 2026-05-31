@@ -76,6 +76,7 @@
         name: aur_builder
         create_home: true
         group: wheel
+        shell: /sbin/nologin
 
     - name: Allow aur_builder to run sudo pacman without password
       ansible.builtin.lineinfile:
@@ -86,6 +87,7 @@
         validate: 'visudo -cf %s'
 
     - name: Install AUR packages
+      become: true
       become_user: aur_builder
       kewlfft.aur.aur:
         use: auto
