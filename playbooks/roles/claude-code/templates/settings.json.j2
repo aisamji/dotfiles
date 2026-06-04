@@ -4,6 +4,7 @@
 {% if ansible_local.identity.purpose == "work" %}
       "Skill(ybor-standards:git)",
       "Bash(acli jira workitem view:*)",
+      "Bash(acli jira workitem search:*)",
 {% endif %}
       "Bash(kubectl get:*)",
       "Bash(kubectl describe:*)",
@@ -50,6 +51,7 @@
 {% if ansible_local.identity.purpose == "work" %}
     "pr-review-toolkit@claude-plugins-official": true,
     "acli@aisamji-plugins": true,
+    "ybor-jira@p6m-run-plugins": true,
 {% endif %}
     "cq@cq": true,
     "caveman@caveman": true
