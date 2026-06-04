@@ -63,6 +63,7 @@
           - fnm
           - timeshift
           - tree-sitter
+          - ruby
           - ripgrep
           - nodejs
           - npm
