@@ -23,11 +23,11 @@
         state: present
     - name: Set formulas
       ansible.builtin.set_fact:
-        homebrew_formulas_install: "{{ homebrew_formulas.all }}"
+        packages_homebrew_formulas_install: "{{ homebrew_formulas.all }}"
     - name: Add work formulas
       when: ansible_local.identity.purpose == "work"
       ansible.builtin.set_fact:
-        homebrew_formulas_install: "{{ homebrew_formulas_install + homebrew_formulas.work }}"
+        packages_homebrew_formulas_install: "{{ packages_homebrew_formulas_install + homebrew_formulas.work }}"
     - name: Install formulas
       community.general.homebrew:
         state: present
@@ -63,7 +63,7 @@
           - fnm
           - timeshift
           - tree-sitter
-          - ruby
+          - ruby  # Necessary for building certain LSP servers
           - ripgrep
           - nodejs
           - npm
@@ -106,43 +106,45 @@
 
 - name: Gather fnm info
   ansible.builtin.command: fnm list
-  register: fnm_list
+  register: packages_fnm_list
   check_mode: false
   changed_when: false
 
 - name: Set system node as default
   ansible.builtin.command: "{% if ansible_check_mode %}echo{% else %}fnm default system{% endif %}"
   check_mode: false
-  changed_when: "fnm_list.stdout_lines | select('search', 'system') |
+  changed_when: "packages_fnm_list.stdout_lines | select('search', 'system') |
     select('search', 'default') | length == 0"
 
 - name: Check if claude-code is installed
   ansible.builtin.stat:
     path: "{{ ansible_facts['env'].HOME }}/.local/bin/claude"
-  register: claude_code_binary
+  register: packages_claude_code_binary
 
 - name: Create temp directory for claude-code build
-  when: "not claude_code_binary.stat.exists"
+  when: "not packages_claude_code_binary.stat.exists"
   ansible.builtin.tempfile:
     state: directory
     prefix: claude_code_build_
-  register: claude_code_build
+  register: packages_claude_code_build
 
 - name: Install claude-code with native installer
-  when: "not claude_code_binary.stat.exists"
+  when: "not packages_claude_code_binary.stat.exists"
   block:
     - name: Download claude-code bootstrap script
       ansible.builtin.get_url:
         url: "https://downloads.claude.ai/claude-code-releases/bootstrap.sh"
-        dest: "{{ claude_code_build.path }}/bootstrap.sh"
+        dest: "{{ packages_claude_code_build.path }}/bootstrap.sh"
         mode: "0700"
         checksum: "sha256:b315b46925a9bfb9422f2503dd5aa649f680832f4c076b22d87c39d578c3d830"
 
     - name: Run bootstrap script
-      ansible.builtin.command: "{{ claude_code_build.path }}/bootstrap.sh"
+      ansible.builtin.command:
+        cmd: "{{ packages_claude_code_build.path }}/bootstrap.sh"
+        creates: "{{ ansible_facts['env'].HOME }}/.local/bin/claude"
 
   always:
     - name: Clean up temp directory
       ansible.builtin.file:
         state: absent
-        path: "{{ claude_code_build.path }}"
+        path: "{{ packages_claude_code_build.path }}"
