@@ -24,3 +24,10 @@
 #   when: "backup_device_uuid | length > 0"
 
 # TODO: Should `timeshift --check` be added as a handler? In which case, timeshift would be its own play
+
+- name: Copy config files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/sddm.conf"
+    dest: "/etc/sddm.conf.d/defaults.conf"
+    mode: "0644"
+  become: true
