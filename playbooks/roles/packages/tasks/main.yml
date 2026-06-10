@@ -23,11 +23,11 @@
         state: present
     - name: Set formulas
       ansible.builtin.set_fact:
-        packages_homebrew_formulas_install: "{{ homebrew_formulas.all }}"
+        homebrew_formulas_install: "{{ homebrew_formulas.all }}"
     - name: Add work formulas
       when: ansible_local.identity.purpose == "work"
       ansible.builtin.set_fact:
-        packages_homebrew_formulas_install: "{{ packages_homebrew_formulas_install + homebrew_formulas.work }}"
+        homebrew_formulas_install: "{{ homebrew_formulas_install + homebrew_formulas.work }}"
     - name: Install formulas
       community.general.homebrew:
         state: present
