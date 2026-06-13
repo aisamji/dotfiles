@@ -8,6 +8,8 @@
     - role: packages
     - role: git
       tags: [git]
+    - role: neovim
+      tags: [neovim]
     - role: claude-code
       tags: [claude, claude-code]
     - role: bash
@@ -16,54 +18,3 @@
       tags: [dotfiles]
 
 # TODO: Make packages into their own play. Avoids noisy neighbor issues where failures in unrelated applications caused neovim handlers to fail.
-
-- name: Configure Neovim
-  hosts: localhost
-  gather_subset:
-    - '!all'
-
-  tasks:
-    # These files need to be copied because a merge conflict would break neovim
-    # and neovim is my tool of choice for resolving conflicts.
-    # lazy-lock is excluded because it needs special handling to notify the handlers.
-    - name: Gather neovim config files
-      ansible.builtin.find:
-        paths: "{{ playbook_dir }}/files/nvim"
-        recurse: true
-        file_type: file
-        excludes:
-          - lazy-lock.json
-      register: nvim_config
-
-    - name: Copy lazy-lock.json
-      ansible.builtin.copy:
-        src: "{{ playbook_dir }}/files/nvim/lazy-lock.json"
-        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
-        mode: "0644"
-        directory_mode: "0755"
-      notify:
-        - Lock Neovim Plugins
-        - Clean Neovim Plugins
-
-    - name: Copy remaining neovim config files
-      ansible.builtin.copy:
-        src: "{{ item.path }}"
-        dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname |
-          relpath(playbook_dir + '/files/nvim') }}/"
-        mode: "0644"
-        directory_mode: "0755"
-      loop: "{{ nvim_config.files }}"
-
-  # Lazy Commands Docs: https://lazy.folke.io/usage#-commands
-  handlers:
-    - name: Lock Neovim Plugins
-      ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
-      register: lazy_restore_cmd
-      changed_when: "lazy_restore_cmd.stdout_lines | select('search', 'clone|(Previous HEAD)') | length != 0"
-      # A `clone` is only done when installing new plugins
-      # You only have `Previous HEAD` when checking out a different branch
-
-    - name: Clean Neovim Plugins
-      ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
-      register: lazy_clean_cmd
-      changed_when: "lazy_clean_cmd.stdout_lines | length != 0"

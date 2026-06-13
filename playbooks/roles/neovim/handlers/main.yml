@@ -1,0 +1,11 @@
+- name: Lock Neovim Plugins
+  ansible.builtin.command: nvim --headless "+Lazy! restore" +qa
+  register: neovim_lazy_restore_cmd
+  changed_when: "neovim_lazy_restore_cmd.stdout_lines | select('search', 'clone|(Previous HEAD)') | length != 0"
+  # A `clone` is only done when installing new plugins
+  # You only have `Previous HEAD` when checking out a different branch
+
+- name: Clean Neovim Plugins
+  ansible.builtin.command: nvim --headless "+Lazy! clean" +qa
+  register: neovim_lazy_clean_cmd
+  changed_when: "neovim_lazy_clean_cmd.stdout_lines | length != 0"

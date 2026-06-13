@@ -1,0 +1,33 @@
+# These files need to be copied because a merge conflict would break neovim
+# and neovim is my tool of choice for resolving conflicts.
+# lazy-lock is excluded because it needs special handling to notify the handlers.
+- name: Gather neovim config files
+  ansible.builtin.find:
+    paths: "{{ role_path }}/files/nvim"
+    recurse: true
+    file_type: file
+    excludes:
+      - lazy-lock.json
+  register: neovim_config
+
+- name: Copy lazy-lock.json
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/nvim/lazy-lock.json"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/lazy-lock.json"
+    mode: "0644"
+    directory_mode: "0755"
+  notify:
+    - Lock Neovim Plugins
+    - Clean Neovim Plugins
+
+- name: Copy remaining neovim config files
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "{{ ansible_facts['env'].HOME }}/.config/nvim/{{ item.path | dirname |
+      relpath(role_path + '/files/nvim') }}/"
+    mode: "0644"
+    directory_mode: "0755"
+  loop: "{{ neovim_config.files }}"
+
+- name: Run notified handlers
+  ansible.builtin.meta: flush_handlers
