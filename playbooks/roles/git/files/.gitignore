@@ -69,3 +69,5 @@ tags
 ## Personal conventions
 .gitworktrees
 .dotfiles
+
+**/.claude/settings.local.json
