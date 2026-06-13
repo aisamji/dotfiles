@@ -31,3 +31,4 @@
     dest: "/etc/sddm.conf.d/defaults.conf"
     mode: "0644"
   become: true
+  when: ansible_facts['distribution'] == "Archlinux"
