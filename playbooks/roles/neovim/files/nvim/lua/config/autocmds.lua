@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd("User", {
     desc = "Commit lazy-lock to dotfiles repo.",
     callback = function(_)
         local src_file = vim.fn.expand "~/.config/nvim/lazy-lock.json"
-        local dest_file = vim.fn.expand "~/.dotfiles/playbooks/files/nvim/lazy-lock.json"
+        local dest_file = vim.fn.expand "~/.dotfiles/playbooks/roles/neovim/files/nvim/lazy-lock.json"
         local dotfiles_repo = vim.fn.expand "~/.dotfiles"
 
         -- These events are triggered before the lock file is updated, resulting in no diff.
