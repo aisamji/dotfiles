@@ -148,3 +148,8 @@
       ansible.builtin.file:
         state: absent
         path: "{{ packages_claude_code_build.path }}"
+
+- name: Install claude-code ACP plugin
+  ansible.builtin.command:
+    cmd: "npm install -g @agentclientprotocol/claude-agent-acp"
+    creates: "{{ ansible_facts['env'].HOME }}/.local/bin/claude-agent-acp"

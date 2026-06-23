@@ -67,9 +67,36 @@ return {
     },
     {
         "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "codecompanion" },
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
         opts = {},
-        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    },
+    {
+        "olimorris/codecompanion.nvim",
+        version = "^19.0.0",
+        opts = {
+            adapters = {
+                acp = {
+                    claude_code = function()
+                        return require("codecompanion.adapters").extend("claude_code", {
+                            env = {
+                                CLAUDE_CODE_OAUTH_TOKEN = "CLAUDE_CODE_OAUTH_TOKEN",
+                            },
+                        })
+                    end,
+                },
+            },
+            interactions = {
+                chat = {
+                    adapter = "claude_code",
+                },
+            },
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
     },
 }
