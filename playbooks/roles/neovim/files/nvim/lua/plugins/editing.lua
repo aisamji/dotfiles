@@ -115,6 +115,15 @@ return {
             panel = {
                 enabled = false,
             },
+            server_opts_overrides = {
+                settings = {
+                    advanced = {
+                        length = 500,
+                        temperature = 0.1,
+                        top_p = 1,
+                    },
+                },
+            },
             nes = {
                 enabled = true,
                 auto_trigger = true,
