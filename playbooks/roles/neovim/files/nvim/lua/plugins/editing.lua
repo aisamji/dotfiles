@@ -129,6 +129,9 @@ return {
                 markdown = false,
                 toml = false,
                 yaml = false,
+                oil = false,
+                gitcommit = false,
+                gitrebase = false,
             },
         },
         dependencies = {
