@@ -39,7 +39,7 @@ return {
                         i = cmp.mapping.select_prev_item(),
                     },
                     ["<C-l>"] = {
-                        i = cmp.mapping.confirm { select = true },
+                        i = cmp.mapping.confirm { select = false },
                     },
                     ["<C-h>"] = {
                         i = cmp.mapping.abort(),
@@ -73,30 +73,77 @@ return {
         opts = {},
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     },
+    -- {
+    --     "olimorris/codecompanion.nvim",
+    --     version = "^19.0.0",
+    --     opts = {
+    --         adapters = {
+    --             acp = {
+    --                 claude_code = function()
+    --                     return require("codecompanion.adapters").extend("claude_code", {
+    --                         env = {
+    --                             CLAUDE_CODE_OAUTH_TOKEN = "CLAUDE_CODE_OAUTH_TOKEN",
+    --                         },
+    --                     })
+    --                 end,
+    --             },
+    --         },
+    --         interactions = {
+    --             chat = {
+    --                 adapter = "claude_code",
+    --             },
+    --         },
+    --     },
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-treesitter/nvim-treesitter",
+    --     },
+    -- },
     {
-        "olimorris/codecompanion.nvim",
-        version = "^19.0.0",
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        ---@module 'copilot'
+        ---@type CopilotConfig
+        ---@diagnostic disable-next-line: missing-fields
         opts = {
-            adapters = {
-                acp = {
-                    claude_code = function()
-                        return require("codecompanion.adapters").extend("claude_code", {
-                            env = {
-                                CLAUDE_CODE_OAUTH_TOKEN = "CLAUDE_CODE_OAUTH_TOKEN",
-                            },
-                        })
-                    end,
+            ---@diagnostic disable-next-line: missing-fields
+            suggestion = {
+                enabled = false,
+            },
+            ---@diagnostic disable-next-line: missing-fields
+            panel = {
+                enabled = false,
+            },
+            nes = {
+                enabled = true,
+                auto_trigger = true,
+                keymap = {
+                    accept = "gsA",
+                    accept_and_goto = "gsa",
+                    dismiss = "gsx",
                 },
             },
-            interactions = {
-                chat = {
-                    adapter = "claude_code",
-                },
+            filetypes = {
+                plaintext = false,
+                markdown = false,
+                toml = false,
+                yaml = false,
             },
         },
         dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
+            {
+                "copilotlsp-nvim/copilot-lsp",
+                init = function()
+                    vim.g.copilot_nes_debounce = 500
+                end,
+                opts = {
+                    nes = {
+                        move_count_threshold = 10,
+                        count_horizontal_moves = false,
+                    },
+                },
+            },
         },
     },
 }
