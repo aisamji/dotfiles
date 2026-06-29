@@ -126,11 +126,11 @@ return {
             },
             nes = {
                 enabled = true,
-                auto_trigger = true,
+                auto_trigger = false,
                 keymap = {
-                    accept = "gsA",
-                    accept_and_goto = "gsa",
-                    dismiss = "gsx",
+                    accept = false,
+                    accept_and_goto = "gs",
+                    dismiss = false,
                 },
             },
             filetypes = {
@@ -146,15 +146,48 @@ return {
         dependencies = {
             {
                 "copilotlsp-nvim/copilot-lsp",
-                init = function()
-                    vim.g.copilot_nes_debounce = 500
+                config = function()
+                    require("copilot-lsp").setup {
+                        ---@diagnostic disable-next-line: missing-fields
+                        nes = {
+                            move_count_threshold = 10,
+                            count_horizontal_moves = false,
+                        },
+                    }
+
+                    -- After copilot loads, replace the NES autocmd group with sensible triggers
+                    vim.api.nvim_create_autocmd("LspAttach", {
+                        callback = function(args)
+                            local client = vim.lsp.get_client_by_id(args.data.client_id)
+                            if client and client.name == "copilot" then
+                                -- Replace with sane triggers
+                                local nes = require "copilot-lsp.nes"
+                                local debounced = require("copilot-lsp.util").debounce(
+                                    nes.request_nes,
+                                    vim.g.copilot_nes_debounce or 500
+                                )
+
+                                -- The name of the group must match the one used by copilot-lsp in order to override it
+                                vim.api.nvim_create_augroup("copilotlsp.init", { clear = true })
+                                vim.api.nvim_create_autocmd({ "ModeChanged" }, {
+                                    pattern = "i:n", -- only when leaving insert mode
+                                    callback = function()
+                                        debounced(client)
+                                    end,
+                                    group = "copilotlsp.init",
+                                })
+
+                                -- Clear NES when entering insert mode (prevents stale diffs)
+                                vim.api.nvim_create_autocmd("InsertEnter", {
+                                    callback = function()
+                                        nes.clear()
+                                    end,
+                                    group = "copilotlsp.init",
+                                })
+                            end
+                        end,
+                    })
                 end,
-                opts = {
-                    nes = {
-                        move_count_threshold = 10,
-                        count_horizontal_moves = false,
-                    },
-                },
             },
         },
     },
