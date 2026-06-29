@@ -109,7 +109,17 @@ return {
         opts = {
             ---@diagnostic disable-next-line: missing-fields
             suggestion = {
-                enabled = false,
+                enabled = true,
+                auto_trigger = true,
+                hide_during_completion = false,
+                keymap = {
+                    accept = "<Tab>",
+                    accept_line = false,
+                    accept_word = false,
+                    dismiss = false,
+                    next = false,
+                    prev = false,
+                },
             },
             ---@diagnostic disable-next-line: missing-fields
             panel = {
