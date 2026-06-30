@@ -30,6 +30,7 @@ return {
                 },
                 window = {
                     documentation = cmp.config.window.bordered(),
+                    completion = cmp.config.window.bordered(),
                 },
                 mapping = {
                     ["<C-j>"] = {
