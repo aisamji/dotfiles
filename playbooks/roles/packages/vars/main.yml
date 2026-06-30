@@ -1,21 +1,73 @@
-homebrew_formulas:
-  all:
-    - neovim
-    - git
-    - gh
-    - bash
-    - bash-completion@2
-    - jq
-    - yq
-    - fzf
-    - fnm
-    - kubectl
-    - tree-sitter-cli
-    - ripgrep
-    - node
-    - yarn
-    - worktrunk
-  work:
-    - chainsaw
-    - p6m
-    - acli
+packages_common:
+  - arch: neovim
+    homebrew: neovim
+  - arch: git
+    homebrew: git
+  - arch: github-cli
+    homebrew: gh
+  - arch: bash
+    homebrew: bash
+  - homebrew: bash-completion@2
+    # No arch equivalent. bash-completion is included with bash on Arch, so no separate package is needed.
+  - arch: jq
+    homebrew: jq
+  - arch: go-yq
+    homebrew: yq
+  - arch: fzf
+    homebrew: fzf
+  - arch: fnm
+    homebrew: fnm
+  - arch: timeshift
+    # Timeshift is a system restore utility for Linux. On mac, users can use Time Machine for similar functionality.
+  - arch: tree-sitter
+    homebrew: tree-sitter-cli
+  - arch: ruby
+    # Ruby is necessary for building certain LSP servers, but is not pre-installed on Arch.
+  - arch: ripgrep
+    homebrew: ripgrep
+  - arch: nodejs
+    homebrew: node
+  - arch: npm
+    # homebrew installs npm with node, so no separate package is needed
+  - arch: yarn
+    homebrew: yarn
+  - arch: worktrunk
+    homebrew: worktrunk
+  - arch: ttf-firacode-nerd
+    homebrew_cask: font-fira-code-nerd-font
+  - arch: ttf-jetbrains-mono-nerd
+    homebrew_cask: font-jetbrains-mono-nerd-font
+  - arch: pacman-contrib
+    # pacman-contrib is a set of utilities for the pacman package manager on Arch Linux, which is not applicable to macOS.
+  - homebrew_cask: iterm2
+    # The built-in terminal on macOS is attrocious. iterm2 and tmux are the best terminal experience on macOS.
+  - homebrew: archetect/tap/archetect
+    # TODO: Make an AUR package for archetect. Or atleast an internal PKGBUILD.
+  - arch: cnrdrvcups-lb
+    # CUPS driver for Canon printers. macOS has built-in support for Canon printers.
+  - arch: brother-mfc-l2710dw
+    # Brother printer driver. macOS has built-in support for Brother printers.
+  - homebrew_cask: hammerspoon
+    # Hammerspoon is a macOS automation tool. There is no equivalent for Arch Linux, as it is specific to macOS.
+
+packages_work:
+  - arch: kubectl
+    homebrew: kubectl
+  - arch: k9s
+    homebrew: derailed/k9s/k9s
+  - arch: azure-kubelogin
+    homebrew: azure/kubelogin/kubelogin
+  - arch_aur: chainsaw-bin
+    homebrew: kyverno/chainsaw/chainsaw
+  - homebrew: p6m-dev/tap/p6m
+    # No arch equivalent.
+    # TODO: Make an AUR package for p6m. Honestly, don't care since this is work utility and we all use macs internally.
+    # If someone wants to use it on Arch, we can figure it out then.
+  - arch_aur: acli-bin
+    homebrew: atlassian/acli/acli
+  - arch: wireshark-qt
+    homebrew_cask: wireshark-app
+  - arch_aur: kcl-lang
+    homebrew: kcl-lang/tap/kcl
+  - arch_aur: kcl-lang-language-server-bin
+    homebrew: kcl-lang/tap/kcl-lsp

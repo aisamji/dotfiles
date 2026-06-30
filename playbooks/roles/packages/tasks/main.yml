@@ -21,64 +21,59 @@
           - kyverno/chainsaw
           - p6m-dev/tap
         state: present
-    - name: Set formulas
+
+    - name: Collect homebrew formulas (personal)
+      when: ansible_local.identity.purpose == "personal"
       ansible.builtin.set_fact:
-        homebrew_formulas_install: "{{ homebrew_formulas.all }}"
-    - name: Add work formulas
+        packages_homebrew_formulas: "{{ (packages_common + packages_personal) | selectattr('homebrew', 'defined') | map(attribute='homebrew') }}"
+    - name: Collect homebrew formulas (work)
       when: ansible_local.identity.purpose == "work"
       ansible.builtin.set_fact:
-        homebrew_formulas_install: "{{ homebrew_formulas_install + homebrew_formulas.work }}"
+        packages_homebrew_formulas: "{{ (packages_common + packages_work) | selectattr('homebrew', 'defined') | map(attribute='homebrew') }}"
     - name: Install formulas
       community.general.homebrew:
         state: present
-        name: "{{ homebrew_formulas_install }}"
+        name: "{{ packages_homebrew_formulas }}"
+
+    - name: Collect homebrew casks (personal)
+      when: ansible_local.identity.purpose == "personal"
+      ansible.builtin.set_fact:
+        packages_homebrew_casks: "{{ (packages_common + packages_personal) | selectattr('homebrew_cask', 'defined') | map(attribute='homebrew_cask') }}"
+    - name: Collect homebrew casks (work)
+      when: ansible_local.identity.purpose == "work"
+      ansible.builtin.set_fact:
+        packages_homebrew_casks: "{{ (packages_common + packages_work) | selectattr('homebrew_cask', 'defined') | map(attribute='homebrew_cask') }}"
     - name: Install casks
       community.general.homebrew_cask:
         state: present
         # TODO: add ansible_become_pass to variables/vault. Remove `-K` flag in script when running.
         # sudo_password: "{{ ansible_become_pass }}"
-        name:
-          - font-jetbrains-mono-nerd-font
-          - font-fira-code-nerd-font
-          - iterm2
-          - wireshark-app
-          - hammerspoon
+        name: "{{ packages_homebrew_casks }}"
     # TODO: Set homebrew bash as login shell
 
 - name: Install packages (Arch)
   when: ansible_facts['distribution'] == "Archlinux"
   become: "{{ not ansible_check_mode }}"
   block:
+    - name: Collect arch packages (personal)
+      when: ansible_local.identity.purpose == "personal"
+      ansible.builtin.set_fact:
+        packages_arch_packages: "{{ (packages_common + packages_personal) | selectattr('arch', 'defined') | map(attribute='arch') }}"
+    - name: Collect arch packages (work)
+      when: ansible_local.identity.purpose == "work"
+      ansible.builtin.set_fact:
+        packages_arch_packages: "{{ (packages_common + packages_work) | selectattr('arch', 'defined') | map(attribute='arch') }}"
     - name: Install packages
       community.general.pacman:
         state: present
-        name:
-          - neovim
-          - git
-          - github-cli
-          - bash
-          - jq
-          - go-yq
-          - fzf
-          - fnm
-          - timeshift
-          - tree-sitter
-          - ruby  # Necessary for building certain LSP servers
-          - ripgrep
-          - nodejs
-          - npm
-          - yarn
-          - worktrunk
-          - ttf-firacode-nerd
-          - ttf-jetbrains-mono-nerd
-          - pacman-contrib
+        name: "{{ packages_arch_packages }}"
+
     - name: Create aur_builder user
       ansible.builtin.user:
         name: aur_builder
         create_home: true
         group: wheel
         shell: /sbin/nologin
-
     - name: Allow aur_builder to run sudo pacman without password
       ansible.builtin.lineinfile:
         path: /etc/sudoers.d/11-install-aur_builder
@@ -87,15 +82,22 @@
         mode: "0440"
         validate: 'visudo -cf %s'
 
+    - name: Collect arch packages (personal)
+      when: ansible_local.identity.purpose == "personal"
+      ansible.builtin.set_fact:
+        packages_aur_packages: "{{ (packages_common + packages_personal) | selectattr('arch_aur', 'defined') | map(attribute='arch_aur') }}"
+    - name: Collect arch packages (work)
+      when: ansible_local.identity.purpose == "work"
+      ansible.builtin.set_fact:
+        packages_aur_packages: "{{ (packages_common + packages_work) | selectattr('arch_aur', 'defined') | map(attribute='arch_aur') }}"
+
     - name: Install AUR packages
       become: true
       become_user: aur_builder
       kewlfft.aur.aur:
         use: auto
         state: present
-        name:
-          - cnrdrvcups-lb
-          - brother-mfc-l2710dw
+        name: "{{ packages_aur_packages }}"
 
     - name: Enable paccache timer
       ansible.builtin.systemd:
