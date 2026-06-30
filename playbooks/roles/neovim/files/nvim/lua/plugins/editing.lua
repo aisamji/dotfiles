@@ -78,6 +78,11 @@ return {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
         event = "InsertEnter",
+        init = function()
+            -- remove default <Tab> and <S-Tab> mappings
+            vim.keymap.del("i", "<Tab>")
+            vim.keymap.del("i", "<S-Tab>")
+        end,
         ---@module 'copilot'
         ---@type CopilotConfig
         ---@diagnostic disable-next-line: missing-fields
@@ -119,11 +124,12 @@ return {
                 },
             },
             filetypes = {
-                plaintext = false,
                 markdown = false,
+                text = false,
                 oil = false,
                 gitcommit = false,
                 gitrebase = false,
+                yaml = true,
             },
         },
         dependencies = {
