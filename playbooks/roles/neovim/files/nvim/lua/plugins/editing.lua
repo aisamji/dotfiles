@@ -114,7 +114,7 @@ return {
                 auto_trigger = false,
                 keymap = {
                     accept = false,
-                    accept_and_goto = "gs",
+                    accept_and_goto = "<Tab>",
                     dismiss = false,
                 },
             },
