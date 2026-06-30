@@ -43,9 +43,9 @@ packages_common:
     # The built-in terminal on macOS is attrocious. iterm2 and tmux are the best terminal experience on macOS.
   - homebrew: archetect/tap/archetect
     # TODO: Make an AUR package for archetect. Or atleast an internal PKGBUILD.
-  - arch: cnrdrvcups-lb
+  - arch_aur: cnrdrvcups-lb
     # CUPS driver for Canon printers. macOS has built-in support for Canon printers.
-  - arch: brother-mfc-l2710dw
+  - arch_aur: brother-mfc-l2710dw
     # Brother printer driver. macOS has built-in support for Brother printers.
   - homebrew_cask: hammerspoon
     # Hammerspoon is a macOS automation tool. There is no equivalent for Arch Linux, as it is specific to macOS.
