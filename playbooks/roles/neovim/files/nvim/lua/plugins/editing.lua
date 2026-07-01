@@ -27,6 +27,9 @@ return {
                 sources = {
                     { name = "nvim_lsp" },
                     { name = "async_path" },
+                    { name = "copilot" },
+                    { name = "nvim_lsp_signature_help" },
+                    { name = "calc" },
                 },
                 window = {
                     documentation = cmp.config.window.bordered(),
@@ -52,6 +55,8 @@ return {
         end,
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-calc",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
             "FelipeLema/cmp-async-path",
         },
     },
@@ -89,17 +94,7 @@ return {
         opts = {
             ---@diagnostic disable-next-line: missing-fields
             suggestion = {
-                enabled = true,
-                auto_trigger = true,
-                hide_during_completion = false,
-                keymap = {
-                    accept = "<Tab>",
-                    accept_line = false,
-                    accept_word = false,
-                    dismiss = false,
-                    next = false,
-                    prev = false,
-                },
+                enabled = false,
             },
             ---@diagnostic disable-next-line: missing-fields
             panel = {
@@ -134,6 +129,10 @@ return {
         },
         dependencies = {
             {
+                "zbirenbaum/copilot-cmp",
+                config = true,
+            },
+            {
                 "copilotlsp-nvim/copilot-lsp",
                 config = function()
                     require("copilot-lsp").setup {
@@ -147,6 +146,7 @@ return {
                     -- After copilot loads, replace the NES autocmd group with sensible triggers
                     vim.api.nvim_create_autocmd("LspAttach", {
                         callback = function(args)
+                            -- TODO: Fix triggers to ensure that NES is only requested in normal mode. It is still being requested in insert mode for an unknown reason.
                             local client = vim.lsp.get_client_by_id(args.data.client_id)
                             if client and client.name == "copilot" then
                                 -- Replace with sane triggers
@@ -160,6 +160,14 @@ return {
                                 vim.api.nvim_create_augroup("copilotlsp.init", { clear = true })
                                 vim.api.nvim_create_autocmd({ "ModeChanged" }, {
                                     pattern = "i:n", -- only when leaving insert mode
+                                    callback = function()
+                                        debounced(client)
+                                    end,
+                                    group = "copilotlsp.init",
+                                })
+
+                                -- Trigger NES when text is changed in normal mode.
+                                vim.api.nvim_create_autocmd({ "TextChanged" }, {
                                     callback = function()
                                         debounced(client)
                                     end,
