@@ -25,11 +25,11 @@ return {
             --- @type cmp.ConfigSchema
             local config = {
                 sources = {
-                    { name = "nvim_lsp" },
                     { name = "async_path" },
-                    { name = "copilot" },
                     { name = "nvim_lsp_signature_help" },
                     { name = "calc" },
+                    { name = "copilot" },
+                    { name = "nvim_lsp" },
                 },
                 window = {
                     documentation = cmp.config.window.bordered(),
