@@ -24,12 +24,17 @@ return {
             local cmp = require "cmp"
             --- @type cmp.ConfigSchema
             local config = {
+                ---@diagnostic disable-next-line: missing-fields
+                performance = {
+                    fetching_timeout = 2000,
+                },
                 sources = {
-                    { name = "async_path" },
-                    { name = "nvim_lsp_signature_help" },
-                    { name = "calc" },
-                    { name = "copilot" },
-                    { name = "nvim_lsp" },
+                    { name = "async_path", group_index = 2 },
+                    { name = "nvim_lsp_signature_help", group_index = 1 },
+                    { name = "calc", group_index = 2 },
+                    -- { name = "copilot", group_index = 2 },
+                    { name = "minuet", group_index = 2 },
+                    { name = "nvim_lsp", group_index = 2 },
                 },
                 window = {
                     documentation = cmp.config.window.bordered(),
@@ -79,112 +84,159 @@ return {
         opts = {},
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     },
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     event = "InsertEnter",
+    --     init = function()
+    --         -- remove default <Tab> and <S-Tab> mappings
+    --         vim.keymap.del("i", "<Tab>")
+    --         vim.keymap.del("i", "<S-Tab>")
+    --     end,
+    --     ---@module 'copilot'
+    --     ---@type CopilotConfig
+    --     ---@diagnostic disable-next-line: missing-fields
+    --     opts = {
+    --         ---@diagnostic disable-next-line: missing-fields
+    --         suggestion = {
+    --             enabled = false,
+    --         },
+    --         ---@diagnostic disable-next-line: missing-fields
+    --         panel = {
+    --             enabled = false,
+    --         },
+    --         server_opts_overrides = {
+    --             settings = {
+    --                 advanced = {
+    --                     length = 500,
+    --                     temperature = 0.1,
+    --                     top_p = 1,
+    --                 },
+    --             },
+    --         },
+    --         nes = {
+    --             enabled = true,
+    --             auto_trigger = false,
+    --             keymap = {
+    --                 accept = false,
+    --                 accept_and_goto = "<Tab>",
+    --                 dismiss = false,
+    --             },
+    --         },
+    --         filetypes = {
+    --             markdown = false,
+    --             text = false,
+    --             oil = false,
+    --             gitcommit = false,
+    --             gitrebase = false,
+    --             yaml = true,
+    --         },
+    --     },
+    --     dependencies = {
+    --         {
+    --             "zbirenbaum/copilot-cmp",
+    --             config = true,
+    --         },
+    --         {
+    --             "copilotlsp-nvim/copilot-lsp",
+    --             config = function()
+    --                 require("copilot-lsp").setup {
+    --                     ---@diagnostic disable-next-line: missing-fields
+    --                     nes = {
+    --                         move_count_threshold = 10,
+    --                         count_horizontal_moves = false,
+    --                     },
+    --                 }
+    --
+    --                 -- After copilot loads, replace the NES autocmd group with sensible triggers
+    --                 vim.api.nvim_create_autocmd("LspAttach", {
+    --                     callback = function(args)
+    --                         -- TODO: Fix triggers to ensure that NES is only requested in normal mode. It is still being requested in insert mode for an unknown reason.
+    --                         local client = vim.lsp.get_client_by_id(args.data.client_id)
+    --                         if client and client.name == "copilot" then
+    --                             -- Replace with sane triggers
+    --                             local nes = require "copilot-lsp.nes"
+    --                             local debounced = require("copilot-lsp.util").debounce(
+    --                                 nes.request_nes,
+    --                                 vim.g.copilot_nes_debounce or 500
+    --                             )
+    --
+    --                             -- The name of the group must match the one used by copilot-lsp in order to override it
+    --                             vim.api.nvim_create_augroup("copilotlsp.init", { clear = true })
+    --                             vim.api.nvim_create_autocmd({ "ModeChanged" }, {
+    --                                 pattern = "i:n", -- only when leaving insert mode
+    --                                 callback = function()
+    --                                     debounced(client)
+    --                                 end,
+    --                                 group = "copilotlsp.init",
+    --                             })
+    --
+    --                             -- Trigger NES when text is changed in normal mode.
+    --                             vim.api.nvim_create_autocmd({ "TextChanged" }, {
+    --                                 callback = function()
+    --                                     debounced(client)
+    --                                 end,
+    --                                 group = "copilotlsp.init",
+    --                             })
+    --
+    --                             -- Clear NES when entering insert mode (prevents stale diffs)
+    --                             vim.api.nvim_create_autocmd("InsertEnter", {
+    --                                 callback = function()
+    --                                     nes.clear()
+    --                                 end,
+    --                                 group = "copilotlsp.init",
+    --                             })
+    --                         end
+    --                     end,
+    --                 })
+    --             end,
+    --         },
+    --     },
+    -- },
     {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
-        init = function()
-            -- remove default <Tab> and <S-Tab> mappings
-            vim.keymap.del("i", "<Tab>")
-            vim.keymap.del("i", "<S-Tab>")
-        end,
-        ---@module 'copilot'
-        ---@type CopilotConfig
-        ---@diagnostic disable-next-line: missing-fields
-        opts = {
-            ---@diagnostic disable-next-line: missing-fields
-            suggestion = {
-                enabled = false,
-            },
-            ---@diagnostic disable-next-line: missing-fields
-            panel = {
-                enabled = false,
-            },
-            server_opts_overrides = {
-                settings = {
-                    advanced = {
-                        length = 500,
-                        temperature = 0.1,
-                        top_p = 1,
+        {
+            "milanglacier/minuet-ai.nvim",
+            opts = {
+                cmp = {
+                    enabled_auto_complete = true,
+                },
+                n_completions = 3,
+                context_window = 6000,
+                provider = "openai_compatible",
+                request_timeout = 2.5,
+                throttle = 1500,
+                debounce = 600,
+                provider_options = {
+                    openai_compatible = {
+                        api_key = "DO_MODEL_ACCESS_KEY",
+                        end_point = "https://inference.do-ai.run/v1/chat/completions",
+                        model = "deepseek-4-flash",
+                        name = "DeepSeek",
+                        optional = {
+                            max_completion_tokens = 256,
+                            temperature = 0,
+                            reasoning_effort = "none",
+                        },
+                    },
+                },
+                duet = {
+                    provider = "openai_compatible",
+                    provider_options = {
+                        openai_compatible = {
+                            api_key = "DO_MODEL_ACCESS_KEY",
+                            end_point = "https://inference.do-ai.run/v1/chat/completions",
+                            model = "deepseek-4-flash",
+                            name = "DeepSeek",
+                            optional = {
+                                temperature = 0,
+                                reasoning_effort = "none",
+                            },
+                        },
                     },
                 },
             },
-            nes = {
-                enabled = true,
-                auto_trigger = false,
-                keymap = {
-                    accept = false,
-                    accept_and_goto = "<Tab>",
-                    dismiss = false,
-                },
-            },
-            filetypes = {
-                markdown = false,
-                text = false,
-                oil = false,
-                gitcommit = false,
-                gitrebase = false,
-                yaml = true,
-            },
-        },
-        dependencies = {
-            {
-                "zbirenbaum/copilot-cmp",
-                config = true,
-            },
-            {
-                "copilotlsp-nvim/copilot-lsp",
-                config = function()
-                    require("copilot-lsp").setup {
-                        ---@diagnostic disable-next-line: missing-fields
-                        nes = {
-                            move_count_threshold = 10,
-                            count_horizontal_moves = false,
-                        },
-                    }
-
-                    -- After copilot loads, replace the NES autocmd group with sensible triggers
-                    vim.api.nvim_create_autocmd("LspAttach", {
-                        callback = function(args)
-                            -- TODO: Fix triggers to ensure that NES is only requested in normal mode. It is still being requested in insert mode for an unknown reason.
-                            local client = vim.lsp.get_client_by_id(args.data.client_id)
-                            if client and client.name == "copilot" then
-                                -- Replace with sane triggers
-                                local nes = require "copilot-lsp.nes"
-                                local debounced = require("copilot-lsp.util").debounce(
-                                    nes.request_nes,
-                                    vim.g.copilot_nes_debounce or 500
-                                )
-
-                                -- The name of the group must match the one used by copilot-lsp in order to override it
-                                vim.api.nvim_create_augroup("copilotlsp.init", { clear = true })
-                                vim.api.nvim_create_autocmd({ "ModeChanged" }, {
-                                    pattern = "i:n", -- only when leaving insert mode
-                                    callback = function()
-                                        debounced(client)
-                                    end,
-                                    group = "copilotlsp.init",
-                                })
-
-                                -- Trigger NES when text is changed in normal mode.
-                                vim.api.nvim_create_autocmd({ "TextChanged" }, {
-                                    callback = function()
-                                        debounced(client)
-                                    end,
-                                    group = "copilotlsp.init",
-                                })
-
-                                -- Clear NES when entering insert mode (prevents stale diffs)
-                                vim.api.nvim_create_autocmd("InsertEnter", {
-                                    callback = function()
-                                        nes.clear()
-                                    end,
-                                    group = "copilotlsp.init",
-                                })
-                            end
-                        end,
-                    })
-                end,
+            dependencies = {
+                "hrsh7th/nvim-cmp",
             },
         },
     },
