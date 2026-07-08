@@ -57,6 +57,11 @@ packages_work:
     homebrew: derailed/k9s/k9s
   - arch: azure-kubelogin
     homebrew: azure/kubelogin/kubelogin
+  - arch_aur: kind
+    homebrew: kind
+  - homebrew: cloud-provider-kind
+    # TODO: Make an AUR package for p6m. Honestly, don't care since this is work utility and we all use macs internally.
+    # If someone wants to use it on Arch, we can figure it out then.
   - arch_aur: chainsaw-bin
     homebrew: kyverno/chainsaw/chainsaw
   - homebrew: p6m-dev/tap/p6m
