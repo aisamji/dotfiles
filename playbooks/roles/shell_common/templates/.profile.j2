@@ -7,7 +7,7 @@ if which fnm > /dev/null 2> /dev/null; then
 fi
 export npm_config_prefix="$HOME/.local"
 export CLAUDE_CODE_NO_FLICKER=1
-export CLAUDE_CODE_DISABLE_MOUSE=1
+export CLAUDE_CODE_DISABLE_MOUSE_CLICK=1
 
 export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 {% if ansible_facts['distribution'] == "MacOSX" %}
