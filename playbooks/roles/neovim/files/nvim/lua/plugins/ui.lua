@@ -29,10 +29,12 @@ return {
     },
     {
         "nvim-lualine/lualine.nvim",
+        event = "VimEnter",
         opts = {
             options = {
                 globalstatus = true,
                 theme = "tokyonight",
+                disabled_filetypes = { "TelescopePrompt", "checkhealth" },
             },
             sections = {
                 lualine_a = { "mode" },
@@ -43,8 +45,11 @@ return {
                         "filename",
                         path = 1, -- Show as relative path
                     },
+                    function()
+                        return require("lsp-progress").progress()
+                    end,
                 },
-                lualine_x = { "filetype", "lsp_status" },
+                lualine_x = { "filetype" },
                 lualine_y = { "encoding", "fileformat" },
                 lualine_z = { "location" },
             },
@@ -58,7 +63,13 @@ return {
             },
             extensions = { "oil" },
         },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+            {
+                "linrongbin16/lsp-progress.nvim",
+                config = true,
+            },
+        },
     },
     {
         "folke/tokyonight.nvim",
@@ -68,13 +79,5 @@ return {
             require("tokyonight").setup {}
             vim.cmd [[colorscheme tokyonight]]
         end,
-    },
-    {
-        "j-hui/fidget.nvim",
-        opts = {
-            notification = {
-                override_vim_notify = true,
-            },
-        },
     },
 }
