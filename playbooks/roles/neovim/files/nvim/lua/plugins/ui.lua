@@ -30,39 +30,51 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         event = "VimEnter",
-        opts = {
-            options = {
-                globalstatus = true,
-                theme = "tokyonight",
-                disabled_filetypes = { "TelescopePrompt", "checkhealth" },
-            },
-            sections = {
-                lualine_a = { "mode" },
-                lualine_b = { "branch", "diff" },
-                lualine_c = {
-                    "diagnostics",
-                    {
-                        "filename",
-                        path = 1, -- Show as relative path
-                    },
-                    function()
-                        return require("lsp-progress").progress()
-                    end,
+        config = function()
+            require("lualine").setup {
+                options = {
+                    globalstatus = true,
+                    theme = "tokyonight",
+                    disabled_filetypes = { "TelescopePrompt", "checkhealth" },
                 },
-                lualine_x = { "filetype" },
-                lualine_y = { "encoding", "fileformat" },
-                lualine_z = { "location" },
-            },
-            inactive_sections = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = {},
-                lualine_x = {},
-                lualine_y = {},
-                lualine_z = {},
-            },
-            extensions = { "oil" },
-        },
+                sections = {
+                    lualine_a = { "mode" },
+                    lualine_b = { "branch", "diff" },
+                    lualine_c = {
+                        "diagnostics",
+                        {
+                            "filename",
+                            path = 1, -- Show as relative path
+                        },
+                    },
+                    lualine_x = {
+                        function()
+                            return require("lsp-progress").progress()
+                        end,
+                        "filetype",
+                    },
+                    lualine_y = { "encoding", "fileformat" },
+                    lualine_z = { "location" },
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = {},
+                    lualine_x = {},
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+                extensions = { "oil" },
+            }
+
+            -- listen to lsp-progress event and refresh
+            vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+            vim.api.nvim_create_autocmd("User", {
+                group = "lualine_augroup",
+                pattern = "LspProgressStatusUpdated",
+                callback = require("lualine").refresh,
+            })
+        end,
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             {
