@@ -253,7 +253,7 @@ return {
                 })
 
                 vim.keymap.set("n", "<Tab>", function()
-                    vim.cmd "Minuet duet accept"
+                    vim.cmd "Minuet duet apply"
                     vim.cmd "Minuet duet predict"
                 end, {
                     desc = "[minuet.duet] apply prediction and predict next",
