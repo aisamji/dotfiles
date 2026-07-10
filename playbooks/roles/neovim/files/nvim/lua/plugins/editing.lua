@@ -216,10 +216,11 @@ return {
                             optional = {
                                 max_completion_tokens = 256,
                                 temperature = 0,
-                                reasoning_effort = "none",
                             },
                         },
                     },
+                    ---@module "minuet"
+                    ---@type minuet.DuetConfig
                     duet = {
                         provider = "openai_compatible",
                         provider_options = {
@@ -230,45 +231,42 @@ return {
                                 name = "DeepSeek",
                                 optional = {
                                     temperature = 0,
-                                    reasoning_effort = "none",
                                 },
                             },
                         },
                     },
                 }
 
-                vim.api.nvim_create_augroup("MinuetDuet", { clear = true })
+                -- Use autocmd to auto trigger duet prediction. Use the augroup created by Minuet
                 -- TODO: Disable prediction in read-only buffers and TelescopePrompt
                 vim.api.nvim_create_autocmd({ "ModeChanged" }, {
                     pattern = "i:n",
                     group = "MinuetDuet",
-                    desc = "Minuet duet predict",
+                    desc = "[minuet.duet] predict next change",
                     command = "Minuet duet predict",
                 })
+
                 vim.api.nvim_create_autocmd({ "TextChanged" }, {
                     group = "MinuetDuet",
-                    desc = "Minuet duet predict",
+                    desc = "[minuet.duet] predict next change",
                     command = "Minuet duet predict",
                 })
 
-                vim.api.nvim_create_autocmd({ "TextChangedI" }, {
-                    group = "MinuetDuet",
-                    desc = "Minuet duet dismiss",
-                    command = "Minuet duet dismiss",
-                })
-
-                vim.keymap.set("n", "<Tab>", "<cmd>Minuet duet apply<CR>", {
-                    desc = "Minuet duet apply",
+                vim.keymap.set("n", "<Tab>", function()
+                    vim.cmd "Minuet duet accept"
+                    vim.cmd "Minuet duet predict"
+                end, {
+                    desc = "[minuet.duet] apply prediction and predict next",
                     silent = true,
                 })
                 vim.keymap.set("n", "<BS>", "<cmd>Minuet duet dismiss<CR>", {
-                    desc = "Minuet duet dismiss",
+                    desc = "[minuet.duet] dismiss prediction",
                     silent = true,
                 })
             end,
-            dependencies = {
-                "hrsh7th/nvim-cmp",
-            },
+            -- dependencies = {
+            --     "hrsh7th/nvim-cmp",
+            -- },
         },
     },
 }
