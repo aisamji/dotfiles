@@ -33,7 +33,7 @@ return {
                     { name = "nvim_lsp_signature_help", group_index = 1 },
                     { name = "calc", group_index = 2 },
                     -- { name = "copilot", group_index = 2 },
-                    { name = "minuet", group_index = 2 },
+                    -- { name = "minuet", group_index = 2 },
                     { name = "nvim_lsp", group_index = 2 },
                 },
                 window = {
@@ -196,31 +196,17 @@ return {
     {
         {
             "milanglacier/minuet-ai.nvim",
-            opts = {
-                cmp = {
-                    enabled_auto_complete = true,
-                },
-                n_completions = 3,
-                context_window = 6000,
-                provider = "openai_compatible",
-                request_timeout = 2.5,
-                throttle = 1500,
-                debounce = 600,
-                provider_options = {
-                    openai_compatible = {
-                        api_key = "DO_MODEL_ACCESS_KEY",
-                        end_point = "https://inference.do-ai.run/v1/chat/completions",
-                        model = "deepseek-4-flash",
-                        name = "DeepSeek",
-                        optional = {
-                            max_completion_tokens = 256,
-                            temperature = 0,
-                            reasoning_effort = "none",
-                        },
+            config = function()
+                require("minuet").setup {
+                    cmp = {
+                        enabled_auto_complete = false,
                     },
-                },
-                duet = {
+                    n_completions = 3,
+                    context_window = 16000,
                     provider = "openai_compatible",
+                    request_timeout = 2.5,
+                    throttle = 1500,
+                    debounce = 600,
                     provider_options = {
                         openai_compatible = {
                             api_key = "DO_MODEL_ACCESS_KEY",
@@ -228,13 +214,58 @@ return {
                             model = "deepseek-4-flash",
                             name = "DeepSeek",
                             optional = {
+                                max_completion_tokens = 256,
                                 temperature = 0,
                                 reasoning_effort = "none",
                             },
                         },
                     },
-                },
-            },
+                    duet = {
+                        provider = "openai_compatible",
+                        provider_options = {
+                            openai_compatible = {
+                                api_key = "DO_MODEL_ACCESS_KEY",
+                                end_point = "https://inference.do-ai.run/v1/chat/completions",
+                                model = "deepseek-4-flash",
+                                name = "DeepSeek",
+                                optional = {
+                                    temperature = 0,
+                                    reasoning_effort = "none",
+                                },
+                            },
+                        },
+                    },
+                }
+
+                vim.api.nvim_create_augroup("MinuetDuet", { clear = true })
+                -- TODO: Disable prediction in read-only buffers and TelescopePrompt
+                vim.api.nvim_create_autocmd({ "ModeChanged" }, {
+                    pattern = "i:n",
+                    group = "MinuetDuet",
+                    desc = "Minuet duet predict",
+                    command = "Minuet duet predict",
+                })
+                vim.api.nvim_create_autocmd({ "TextChanged" }, {
+                    group = "MinuetDuet",
+                    desc = "Minuet duet predict",
+                    command = "Minuet duet predict",
+                })
+
+                vim.api.nvim_create_autocmd({ "TextChangedI" }, {
+                    group = "MinuetDuet",
+                    desc = "Minuet duet dismiss",
+                    command = "Minuet duet dismiss",
+                })
+
+                vim.keymap.set("n", "<Tab>", "<cmd>Minuet duet apply<CR>", {
+                    desc = "Minuet duet apply",
+                    silent = true,
+                })
+                vim.keymap.set("n", "<BS>", "<cmd>Minuet duet dismiss<CR>", {
+                    desc = "Minuet duet dismiss",
+                    silent = true,
+                })
+            end,
             dependencies = {
                 "hrsh7th/nvim-cmp",
             },
