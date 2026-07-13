@@ -193,80 +193,80 @@ return {
     --         },
     --     },
     -- },
-    {
-        {
-            "milanglacier/minuet-ai.nvim",
-            config = function()
-                require("minuet").setup {
-                    cmp = {
-                        enabled_auto_complete = false,
-                    },
-                    n_completions = 3,
-                    context_window = 16000,
-                    provider = "openai_compatible",
-                    request_timeout = 2.5,
-                    throttle = 1500,
-                    debounce = 600,
-                    provider_options = {
-                        openai_compatible = {
-                            api_key = "DO_MODEL_ACCESS_KEY",
-                            end_point = "https://inference.do-ai.run/v1/chat/completions",
-                            model = "deepseek-4-flash",
-                            name = "DeepSeek",
-                            optional = {
-                                max_completion_tokens = 256,
-                                temperature = 0,
-                            },
-                        },
-                    },
-                    ---@module "minuet"
-                    ---@type minuet.DuetConfig
-                    duet = {
-                        provider = "openai_compatible",
-                        provider_options = {
-                            openai_compatible = {
-                                api_key = "DO_MODEL_ACCESS_KEY",
-                                end_point = "https://inference.do-ai.run/v1/chat/completions",
-                                model = "deepseek-4-flash",
-                                name = "DeepSeek",
-                                optional = {
-                                    temperature = 0,
-                                },
-                            },
-                        },
-                    },
-                }
-
-                -- Use autocmd to auto trigger duet prediction. Use the augroup created by Minuet
-                -- TODO: Disable prediction in read-only buffers and TelescopePrompt
-                vim.api.nvim_create_autocmd({ "ModeChanged" }, {
-                    pattern = "i:n",
-                    group = "MinuetDuet",
-                    desc = "[minuet.duet] predict next change",
-                    command = "Minuet duet predict",
-                })
-
-                vim.api.nvim_create_autocmd({ "TextChanged" }, {
-                    group = "MinuetDuet",
-                    desc = "[minuet.duet] predict next change",
-                    command = "Minuet duet predict",
-                })
-
-                vim.keymap.set("n", "<Tab>", function()
-                    vim.cmd "Minuet duet apply"
-                    vim.cmd "Minuet duet predict"
-                end, {
-                    desc = "[minuet.duet] apply prediction and predict next",
-                    silent = true,
-                })
-                vim.keymap.set("n", "<BS>", "<cmd>Minuet duet dismiss<CR>", {
-                    desc = "[minuet.duet] dismiss prediction",
-                    silent = true,
-                })
-            end,
-            -- dependencies = {
-            --     "hrsh7th/nvim-cmp",
-            -- },
-        },
-    },
+    -- {
+    --     {
+    --         "milanglacier/minuet-ai.nvim",
+    --         config = function()
+    --             require("minuet").setup {
+    --                 cmp = {
+    --                     enabled_auto_complete = false,
+    --                 },
+    --                 n_completions = 3,
+    --                 context_window = 16000,
+    --                 provider = "openai_compatible",
+    --                 request_timeout = 2.5,
+    --                 throttle = 1500,
+    --                 debounce = 600,
+    --                 provider_options = {
+    --                     openai_compatible = {
+    --                         api_key = "DO_MODEL_ACCESS_KEY",
+    --                         end_point = "https://inference.do-ai.run/v1/chat/completions",
+    --                         model = "deepseek-4-flash",
+    --                         name = "DeepSeek",
+    --                         optional = {
+    --                             max_completion_tokens = 256,
+    --                             temperature = 0,
+    --                         },
+    --                     },
+    --                 },
+    --                 ---@module "minuet"
+    --                 ---@type minuet.DuetConfig
+    --                 duet = {
+    --                     provider = "openai_compatible",
+    --                     provider_options = {
+    --                         openai_compatible = {
+    --                             api_key = "DO_MODEL_ACCESS_KEY",
+    --                             end_point = "https://inference.do-ai.run/v1/chat/completions",
+    --                             model = "deepseek-4-flash",
+    --                             name = "DeepSeek",
+    --                             optional = {
+    --                                 temperature = 0,
+    --                             },
+    --                         },
+    --                     },
+    --                 },
+    --             }
+    --
+    --             -- Use autocmd to auto trigger duet prediction. Use the augroup created by Minuet
+    --             -- TODO: Disable prediction in read-only buffers and TelescopePrompt
+    --             vim.api.nvim_create_autocmd({ "ModeChanged" }, {
+    --                 pattern = "i:n",
+    --                 group = "MinuetDuet",
+    --                 desc = "[minuet.duet] predict next change",
+    --                 command = "Minuet duet predict",
+    --             })
+    --
+    --             vim.api.nvim_create_autocmd({ "TextChanged" }, {
+    --                 group = "MinuetDuet",
+    --                 desc = "[minuet.duet] predict next change",
+    --                 command = "Minuet duet predict",
+    --             })
+    --
+    --             vim.keymap.set("n", "<Tab>", function()
+    --                 vim.cmd "Minuet duet apply"
+    --                 vim.cmd "Minuet duet predict"
+    --             end, {
+    --                 desc = "[minuet.duet] apply prediction and predict next",
+    --                 silent = true,
+    --             })
+    --             vim.keymap.set("n", "<BS>", "<cmd>Minuet duet dismiss<CR>", {
+    --                 desc = "[minuet.duet] dismiss prediction",
+    --                 silent = true,
+    --             })
+    --         end,
+    --         -- dependencies = {
+    --         --     "hrsh7th/nvim-cmp",
+    --         -- },
+    --     },
+    -- },
 }
