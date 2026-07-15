@@ -42,10 +42,6 @@ return {
                     lualine_b = { "branch", "diff" },
                     lualine_c = {
                         "diagnostics",
-                        {
-                            "filename",
-                            path = 1, -- Show as relative path
-                        },
                     },
                     lualine_x = {
                         function()
@@ -63,6 +59,22 @@ return {
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {},
+                },
+                winbar = {
+                    lualine_c = {
+                        {
+                            "filename",
+                            path = 1, -- Show as relative path
+                        },
+                    },
+                },
+                inactive_winbar = {
+                    lualine_c = {
+                        {
+                            "filename",
+                            path = 1, -- Show as relative path
+                        },
+                    },
                 },
                 extensions = { "oil" },
             }
