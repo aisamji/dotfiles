@@ -1,0 +1,110 @@
+{% if ansible_local.identity.purpose == "work" %}
+host_name := "o11n"
+host_context := "kind-" + host_name
+release := "solution"
+version := "0.0.42"
+namespace := "solution"
+vcluster_context := "vcluster_" + release + "_" + namespace + "_" + host_context
+
+kyverno_version := "3.2.6"
+cert_manager_version := "v1.16.2"
+nginx_version := "4.15.1"
+
+# Exports must only reference CRDs that actually exist on the host. Otherwise the vcluster's api-server will fail to start
+vcluster_exports := '[
+    {
+        "apiVersion": "cert-manager.io/v1",
+        "kind": "Certificate"
+    },
+    {
+        "apiVersion": "cert-manager.io/v1",
+        "kind": "Issuer"
+    }
+]'
+
+# Launches a kind cluster with a vcluster deployed on it to mimic how we have orchestration/solution controlplanes set up
+o11n-up:
+    #!/usr/bin/env bash
+    if kind get clusters | grep -qx "{{'{{'}}host_name}}"; then
+        echo "kind cluster '{{'{{'}}host_name}}' already exists, skipping create."
+    else
+        kind create cluster -n {{'{{'}}host_name}}
+    fi
+
+    helm repo add --force-update jetstack https://charts.jetstack.io
+    helm upgrade --install cert-manager jetstack/cert-manager \
+        --kube-context {{'{{'}}host_context}} \
+        --namespace cert-manager \
+        --create-namespace \
+        --version {{'{{'}}cert_manager_version}} \
+        --set crds.enabled=true \
+        --wait
+
+    # bitnami/kubectl was moved to bitnamilegacy/kubectl on Docker Hub, breaking
+    # kyverno's cleanup hook/cronjob images (ImagePullBackOff on the old path).
+    helm repo add --force-update kyverno https://kyverno.github.io/kyverno/
+    helm upgrade --install kyverno kyverno/kyverno \
+        --kube-context {{'{{'}}host_context}} \
+        --namespace kyverno \
+        --create-namespace \
+        --version {{'{{'}}kyverno_version}} \
+        --set webhooksCleanup.image.repository=bitnamilegacy/kubectl \
+        --set policyReportsCleanup.image.repository=bitnamilegacy/kubectl \
+        --set cleanupJobs.admissionReports.image.repository=bitnamilegacy/kubectl \
+        --set cleanupJobs.clusterAdmissionReports.image.repository=bitnamilegacy/kubectl \
+        --set cleanupJobs.updateRequests.image.repository=bitnamilegacy/kubectl \
+        --set cleanupJobs.ephemeralReports.image.repository=bitnamilegacy/kubectl \
+        --set cleanupJobs.clusterEphemeralReports.image.repository=bitnamilegacy/kubectl \
+        --wait
+
+    helm repo add --force-update ingress-nginx https://kubernetes.github.io/ingress-nginx
+    helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+        --kube-context {{'{{'}}host_context}} \
+        --namespace nginx \
+        --create-namespace \
+        --version {{'{{'}}nginx_version}} \
+        --wait
+
+    # Remove nodeSelectors since we are running on a kind cluster.
+    helm upgrade --install {{'{{'}}release}} oci://p6m.jfrog.io/p6m-dev-docker/p6m-vcluster \
+        --kube-context {{'{{'}}host_context}} \
+        --namespace {{'{{'}}namespace}} \
+        --create-namespace \
+        --set vcluster.controlPlane.service.spec.type=NodePort \
+        --set vcluster.controlPlane.backingStore.etcd.deploy.statefulSet.scheduling.nodeSelector=null \
+        --set vcluster.controlPlane.coredns.deployment.nodeSelector=null \
+        --set vcluster.controlPlane.statefulSet.scheduling.nodeSelector=null \
+        --set-json 'vcluster.experimental.genericSync.export={{'{{'}}vcluster_exports}}' \
+        --wait
+
+    kubectl delete service vcluster-loadbalancer --namespace {{'{{'}}namespace}} --context {{'{{'}}host_context}} &
+    kubectl patch service vcluster-loadbalancer --namespace {{'{{'}}namespace}} --context {{'{{'}}host_context}} --type='json' --patch '[{"op": "remove", "path": "/metadata/finalizers"}]'
+
+    vcluster connect {{'{{'}}release}} --namespace {{'{{'}}namespace}} --context {{'{{'}}host_context}}
+
+# Delete the kind cluster and remove the vcluster from kubeconfig context
+o11n-down:
+    #!/usr/bin/env bash
+    vcluster disconnect --context {{'{{'}}vcluster_context}}
+    if kind get clusters | grep -qx "{{'{{'}}host_name}}"; then
+        kind delete cluster -n {{'{{'}}host_name}}
+    else
+        echo "kind cluster '{{'{{'}}host_name}}' does not exist, skipping delete."
+    fi
+    kubectl config delete-context {{'{{'}}vcluster_context}}
+{% endif %}
+
+# Generate self-signed cert/key for given hostname(s).
+selfsigned-cert +hostnames:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    primary="$(cut -d' ' -f1 <<< "{{'{{'}}hostnames}}")"
+    san="$(tr ' ' '\n' <<< "{{'{{'}}hostnames}}" | sed 's/^/DNS:/' | paste -sd, -)"
+    openssl req -new -x509 \
+        -newkey rsa:4096 -sha256 -nodes -days 30 \
+        -out ${primary}.crt \
+        -keyout ${primary}.key \
+        -subj "/CN=${primary}" \
+        -addext "subjectAltName=${san}"
+
+

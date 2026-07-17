@@ -49,6 +49,8 @@ packages_common:
     # Brother printer driver. macOS has built-in support for Brother printers.
   - homebrew_cask: hammerspoon
     # Hammerspoon is a macOS automation tool. There is no equivalent for Arch Linux, as it is specific to macOS.
+  - arch: just
+    homebrew: just
 
 packages_work:
   - arch: kubectl
