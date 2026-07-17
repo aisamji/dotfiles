@@ -13,5 +13,4 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.completeopt = "menu,menuone,noselect"
 
-vim.cmd.colorscheme "catppuccin"
 require("vim._core.ui2").enable()
