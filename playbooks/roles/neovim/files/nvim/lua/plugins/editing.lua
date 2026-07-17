@@ -29,12 +29,23 @@ return {
                     fetching_timeout = 2000,
                 },
                 sources = {
-                    { name = "async_path", group_index = 2 },
-                    { name = "nvim_lsp_signature_help", group_index = 1 },
-                    { name = "calc", group_index = 2 },
-                    -- { name = "copilot", group_index = 2 },
-                    -- { name = "minuet", group_index = 2 },
-                    { name = "nvim_lsp", group_index = 2 },
+                    { name = "async_path", group_index = 20 },
+                    { name = "nvim_lsp_signature_help", group_index = 10 },
+                    { name = "calc", group_index = 20 },
+                    -- { name = "copilot", group_index = 20 },
+                    -- { name = "minuet", group_index = 20 },
+                    { name = "nvim_lsp", group_index = 20 },
+                    {
+                        name = "spell",
+                        group_index = 5,
+                        option = {
+                            keep_all_entries = false,
+                            enable_in_context = function()
+                                return require("cmp.config.context").in_treesitter_capture "spell"
+                            end,
+                            preselect_correct_word = true,
+                        },
+                    },
                 },
                 window = {
                     documentation = cmp.config.window.bordered(),
@@ -64,6 +75,9 @@ return {
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "FelipeLema/cmp-async-path",
         },
+    },
+    {
+        "f3fora/cmp-spell",
     },
     {
         "folke/lazydev.nvim",
