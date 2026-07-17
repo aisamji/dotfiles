@@ -44,14 +44,31 @@ return {
                 extension = {
                     gotmpl = "gotmpl",
                     mdx = "markdown",
+                    j2 = "jinja",
                 },
                 pattern = {
                     [".*/templates/.*%.tpl"] = "helm",
                     [".*/templates/.*%.ya?ml"] = "helm",
                     ["helmfile.*%.ya?ml"] = "helm",
                     [".*/playbooks/.*%.ya?ml"] = "yaml.ansible",
+                    -- [".*%.%w+%.j2"] = "jinja",
                 },
             }
+            -- Jinja injections
+            vim.treesitter.query.add_directive("inject-jinja-host!", function(_, _, bufnr, _, metadata)
+                local fname = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
+                local inner_fname = fname:match "(.+)%.j2"
+                vim.print(inner_fname)
+                local filetype = vim.filetype.match { filename = inner_fname }
+                if not filetype then
+                    return
+                end
+                local injected_parser = vim.treesitter.language.get_lang(filetype)
+                if not injected_parser then
+                    return
+                end
+                metadata["injection.language"] = injected_parser
+            end, {})
         end,
     },
 }
