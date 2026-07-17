@@ -33,9 +33,17 @@
   become: true
   when: ansible_facts['distribution'] == "Archlinux"
 
+- name: Create config directories
+  ansible.builtin.file:
+    dest: "{{ ansible_facts['env'].HOME }}/{{ item }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+  loop:
+    - ".config/just"
+
 - name: Template justfile
   ansible.builtin.template:
     src: "justfile.j2"
     dest: "{{ ansible_facts['env'].HOME }}/.config/just/justfile"
     mode: "0644"
-    directory_mode: "0755"
