@@ -41,5 +41,5 @@ Co-Authored-By: Claude [Model Name] <noreply@anthropic.com>
 - The headline should be no longer than 50 characters long.
 - The body can be multiple lines but each line should not be longer than 72 characters.
 - The body should NOT include why a change was done in a specific way.
-- The Refs line should NOT be included if no jira ticket is evident from the session.
+- The Refs line should NOT be included if no jira ticket or github issue is evident from the session.
 - In the Co-Authored-By line, replace `[Model Name]` with the actual model being used in the session.
