@@ -78,5 +78,6 @@ packages_work:
     homebrew: kcl-lang/tap/kcl
   - arch_aur: kcl-lang-language-server-bin
     homebrew: kcl-lang/tap/kcl-lsp
+  - homebrew: shaharia-lab/tap/slackcli
 
 packages_personal: []
