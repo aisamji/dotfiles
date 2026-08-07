@@ -16,6 +16,7 @@
       "Bash(rg:*)",
       "Bash(crossplane beta trace:*)",
       "Bash(cargo check:*)",
+      "Bash(cargo clippy:*)",
       "WebSearch",
       "Bash(kubectl config get-contexts:*)",
       "Bash(head:*)",
@@ -31,15 +32,23 @@
       "Bash(git * status *)",
       "Bash(git * show *)",
       "Bash(git * grep *)",
-      "Bash(git * bisect *)"
+      "Bash(git * bisect *)",
+      "Bash(git * push *)",
+      "Bash(git * fetch *)",
+      "Bash(dyff *)",
+      "Bash(diff *)"
     ],
     "deny": [
       "Bash(kubectl get secret:*)",
       "Bash(find:*)",
       "Bash(python:*)",
+      "Bash(python3:*)",
       "Bash(cat:*)",
       "Bash(gh pr merge:*)",
       "Bash(gh pr close:*)",
+      "Bash(cargo clippy * --fix *)",
+      "Bash(git * push * --force *)",
+      "Bash(git * push * main *)",
       "Skill(fewer-permission-prompts)"
     ]
   },
