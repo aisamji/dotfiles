@@ -37,7 +37,7 @@ return {
                     { name = "nvim_lsp", group_index = 20 },
                     {
                         name = "spell",
-                        group_index = 5,
+                        group_index = 40,
                         option = {
                             keep_all_entries = false,
                             enable_in_context = function()
