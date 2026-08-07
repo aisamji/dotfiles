@@ -49,12 +49,13 @@
   },
   "enabledPlugins": {
 {% if ansible_local.identity.purpose == "work" %}
-    "pr-review-toolkit@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": false,
     "acli@aisamji-plugins": true,
+    "ybor-standup@alisamji-ybor-plugins": true,
     "ybor-jira@p6m-run-plugins": true,
-    "ybor-standards@p6m-run-plugins": true,
+    "ybor-standards@p6m-run-plugins": false,
 {% endif %}
-    "cq@cq": true,
+    "cq@cq": false,
     "caveman@caveman": true
   },
   "extraKnownMarketplaces": {
@@ -83,6 +84,13 @@
         "source": {
             "source": "github",
             "repo": "aisamji/claude-plugins"
+        },
+        "autoUpdate": true
+    },
+    "alisamji-ybor-plugins": {
+        "source": {
+            "source": "directory",
+            "path": "~/Projects/alisamji-ybor/claude-plugins"
         },
         "autoUpdate": true
     }
