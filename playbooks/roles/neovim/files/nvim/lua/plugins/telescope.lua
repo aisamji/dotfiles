@@ -1,3 +1,17 @@
+-- Telescope autocommands
+vim.api.nvim_create_augroup("telescope_augroup", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+    group = "telescope_augroup",
+    pattern = "TelescopePreviewerLoaded",
+    desc = "Store telescope preview buffer name as buffer-local variable",
+    callback = function(args)
+        local bufname = args.data and args.data.bufname
+        if bufname and bufname ~= "" then
+            vim.b[args.buf].telescope_filename = bufname
+        end
+    end,
+})
+
 return {
     {
         "nvim-telescope/telescope.nvim",

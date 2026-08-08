@@ -57,6 +57,10 @@ return {
             -- Jinja injections
             vim.treesitter.query.add_directive("inject-jinja-host!", function(_, _, bufnr, _, metadata)
                 local fname = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
+                if not fname or fname == "" then
+                    -- Grab telescope previewer name if set.
+                    fname = vim.b[bufnr].telescope_filename
+                end
                 local inner_fname = fname:match "(.+)%.j2"
                 if not inner_fname then
                     -- not a jinja template
