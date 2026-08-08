@@ -58,13 +58,18 @@ return {
             vim.treesitter.query.add_directive("inject-jinja-host!", function(_, _, bufnr, _, metadata)
                 local fname = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
                 local inner_fname = fname:match "(.+)%.j2"
-                vim.print(inner_fname)
+                if not inner_fname then
+                    -- not a jinja template
+                    return
+                end
                 local filetype = vim.filetype.match { filename = inner_fname }
                 if not filetype then
+                    -- could not identify inner filetype to inject
                     return
                 end
                 local injected_parser = vim.treesitter.language.get_lang(filetype)
                 if not injected_parser then
+                    -- no parser available for inner filetype
                     return
                 end
                 metadata["injection.language"] = injected_parser
