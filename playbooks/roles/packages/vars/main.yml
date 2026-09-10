@@ -79,5 +79,8 @@ packages_work:
   - arch_aur: kcl-lang-language-server-bin
     homebrew: kcl-lang/tap/kcl-lsp
   - homebrew: shaharia-lab/tap/slackcli
+  - homebrew: crossplane
+    # TODO: Make an AUR package for p6m. Honestly, don't care since this is work utility and we all use macs internally.
+    # If someone wants to use it on Arch, we can figure it out then.
 
 packages_personal: []
