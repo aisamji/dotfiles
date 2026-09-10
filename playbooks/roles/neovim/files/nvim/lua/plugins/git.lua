@@ -10,6 +10,20 @@ return {
                 end,
                 desc = "Git blame line",
             },
+            {
+                "]g",
+                function()
+                    vim.cmd.Gitsigns "next_hunk"
+                end,
+                desc = "Next git hunk",
+            },
+            {
+                "[g",
+                function()
+                    vim.cmd.Gitsigns "prev_hunk"
+                end,
+                desc = "Previous git hunk",
+            },
         },
         config = true,
     },
