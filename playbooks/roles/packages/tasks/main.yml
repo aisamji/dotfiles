@@ -95,6 +95,7 @@
     - name: Install AUR packages
       become: true
       become_user: aur_builder
+      when: (packages_aur_packages | length) > 0
       kewlfft.aur.aur:
         use: auto
         state: present
