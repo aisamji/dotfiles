@@ -21,3 +21,10 @@
     src: "{{ role_path }}/files/agents"
     dest: "{{ ansible_facts['env'].HOME }}/.claude/agents"
     force: true
+
+- name: Symbolic link .claude/hooks
+  ansible.builtin.file:
+    state: link
+    src: "{{ role_path }}/files/hooks"
+    dest: "{{ ansible_facts['env'].HOME }}/.claude/hooks"
+    force: true
