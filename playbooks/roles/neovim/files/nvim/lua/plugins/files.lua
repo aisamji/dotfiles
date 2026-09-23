@@ -5,6 +5,7 @@ return {
         ---@type oil.SetupOpts
         opts = {
             skip_confirm_for_simple_edits = true,
+            columns = { "icon", "permissions" },
             keymaps = {
                 ["<C-v>"] = { "actions.select", opts = { vertical = true } },
                 ["<C-x>"] = { "actions.select", opts = { horizontal = true } },
