@@ -33,7 +33,7 @@ return {
         config = function()
             require("lualine").setup {
                 options = {
-                    globalstatus = true,
+                    globalstatus = false,
                     theme = "tokyonight-night",
                     disabled_filetypes = { "TelescopePrompt", "checkhealth" },
                 },
@@ -54,10 +54,10 @@ return {
                 },
                 inactive_sections = {
                     lualine_a = {},
-                    lualine_b = {},
+                    lualine_b = { "branch", "diff" },
                     lualine_c = {},
-                    lualine_x = {},
-                    lualine_y = {},
+                    lualine_x = { "filetype" },
+                    lualine_y = { "encoding", "fileformat" },
                     lualine_z = {},
                 },
                 winbar = {
