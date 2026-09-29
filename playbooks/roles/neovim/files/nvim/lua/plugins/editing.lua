@@ -29,7 +29,10 @@ return {
                     fetching_timeout = 2000,
                 },
                 sources = {
-                    { name = "async_path", group_index = 20 },
+                    {
+                        name = "path",
+                        group_index = 20,
+                    },
                     { name = "nvim_lsp_signature_help", group_index = 10 },
                     { name = "calc", group_index = 20 },
                     -- { name = "copilot", group_index = 20 },
@@ -73,7 +76,7 @@ return {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-calc",
             "hrsh7th/cmp-nvim-lsp-signature-help",
-            "FelipeLema/cmp-async-path",
+            "hrsh7th/cmp-path",
         },
     },
     {
