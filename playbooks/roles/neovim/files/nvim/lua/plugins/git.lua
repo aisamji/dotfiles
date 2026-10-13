@@ -24,6 +24,28 @@ return {
                 end,
                 desc = "Previous git hunk",
             },
+            {
+                "<leader>gs",
+                function()
+                    vim.cmd.Gitsigns "stage_hunk"
+                end,
+                desc = "Stage/Unstage hunk",
+            },
+            {
+                "<leader>gs",
+                mode = "v",
+                function()
+                    require("gitsigns").stage_hunk { vim.fn.line ".", vim.fn.line "v" }
+                end,
+                desc = "Stage/Unstage hunk",
+            },
+            {
+                "<leader>gS",
+                function()
+                    vim.cmd.Gitsigns "stage_buffer"
+                end,
+                desc = "Stage/Unstage buffer",
+            },
         },
         config = true,
     },
